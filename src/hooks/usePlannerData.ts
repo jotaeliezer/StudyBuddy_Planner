@@ -7,47 +7,61 @@ const DEFAULT_COURSES: Course[] = [
   { id: '3', name: 'Literature', color: '#C1E1C1' },
 ];
 
+const DEFAULT_CATEGORIES: CategoryDef[] = [
+  { id: 'Homework', name: 'Homework', color: '#bfdbfe', icon: '📚' },
+  { id: 'Exam', name: 'Exam', color: '#fbcfe8', icon: '📝' },
+  { id: 'Project', name: 'Project', color: '#fed7aa', icon: '🚀' },
+  { id: 'Reading', name: 'Reading', color: '#bbf7d0', icon: '📖' },
+  { id: 'Personal', name: 'Personal', color: '#e9d5ff', icon: '🌿' },
+];
+
+function loadJson<T>(key: string, fallback: T, isValid: (v: unknown) => v is T): T {
+  try {
+    const raw = localStorage.getItem(key);
+    if (raw == null || raw === '') return fallback;
+    const parsed: unknown = JSON.parse(raw);
+    if (!isValid(parsed)) return fallback;
+    return parsed;
+  } catch {
+    return fallback;
+  }
+}
+
+function loadCategories(): CategoryDef[] {
+  try {
+    const raw = localStorage.getItem('planner_categories');
+    if (!raw) return DEFAULT_CATEGORIES;
+    const parsed: unknown = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return DEFAULT_CATEGORIES;
+    return parsed.map((c: unknown) => {
+      if (typeof c === 'string') {
+        return { id: c, name: c, color: '#fbcfe8', icon: '📌' };
+      }
+      return c as CategoryDef;
+    });
+  } catch {
+    return DEFAULT_CATEGORIES;
+  }
+}
+
 export function usePlannerData() {
-  const [courses, setCourses] = useState<Course[]>(() => {
-    const saved = localStorage.getItem('planner_courses');
-    return saved ? JSON.parse(saved) : DEFAULT_COURSES;
-  });
+  const [courses, setCourses] = useState<Course[]>(() =>
+    loadJson('planner_courses', DEFAULT_COURSES, (v): v is Course[] => Array.isArray(v))
+  );
 
-  const [tasks, setTasks] = useState<Task[]>(() => {
-    const saved = localStorage.getItem('planner_tasks');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [tasks, setTasks] = useState<Task[]>(() =>
+    loadJson('planner_tasks', [], (v): v is Task[] => Array.isArray(v))
+  );
 
-  const [stickers, setStickers] = useState<Sticker[]>(() => {
-    const saved = localStorage.getItem('planner_stickers');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [stickers, setStickers] = useState<Sticker[]>(() =>
+    loadJson('planner_stickers', [], (v): v is Sticker[] => Array.isArray(v))
+  );
 
-  const [moods, setMoods] = useState<DailyMood[]>(() => {
-    const saved = localStorage.getItem('planner_moods');
-    return saved ? JSON.parse(saved) : [];
-  });
+  const [moods, setMoods] = useState<DailyMood[]>(() =>
+    loadJson('planner_moods', [], (v): v is DailyMood[] => Array.isArray(v))
+  );
 
-  const [categories, setCategories] = useState<CategoryDef[]>(() => {
-    const saved = localStorage.getItem('planner_categories');
-    if (saved) {
-      const parsed = JSON.parse(saved);
-      // Migrate from string[] to CategoryDef[]
-      return parsed.map((c: any) => {
-        if (typeof c === 'string') {
-          return { id: c, name: c, color: '#fbcfe8', icon: '📌' };
-        }
-        return c;
-      });
-    }
-    return [
-      { id: 'Homework', name: 'Homework', color: '#bfdbfe', icon: '📚' },
-      { id: 'Exam', name: 'Exam', color: '#fbcfe8', icon: '📝' },
-      { id: 'Project', name: 'Project', color: '#fed7aa', icon: '🚀' },
-      { id: 'Reading', name: 'Reading', color: '#bbf7d0', icon: '📖' },
-      { id: 'Personal', name: 'Personal', color: '#e9d5ff', icon: '🌿' }
-    ];
-  });
+  const [categories, setCategories] = useState<CategoryDef[]>(() => loadCategories());
 
   useEffect(() => {
     localStorage.setItem('planner_courses', JSON.stringify(courses));

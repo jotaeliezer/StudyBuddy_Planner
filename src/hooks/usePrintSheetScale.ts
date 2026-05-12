@@ -5,11 +5,27 @@ const MAX_SCALE = 1.12;
 /** Padding vs ~@page margins + slack for print preview/chrome UI */
 const VERTICAL_MARGIN_PX = 40;
 
-function applyScale(el: HTMLElement) {
+/** Clears inline scaling; used when leaving print or invalidating queued work. */
+function clearSheetStyles(el: HTMLElement) {
   el.style.transform = '';
   el.style.width = '';
+  el.style.transformOrigin = '';
+}
+
+/**
+ * Measures after a layout pass, then applies scale on the next frame so layout is stable.
+ * All rAF steps check `startToken` against the live token so stale work after `afterprint` is ignored.
+ */
+function applyScale(
+  el: HTMLElement,
+  startToken: number,
+  getLiveToken: () => number
+) {
+  clearSheetStyles(el);
 
   requestAnimationFrame(() => {
+    if (startToken !== getLiveToken()) return;
+
     const contentH = el.scrollHeight;
     if (contentH <= 0) return;
 
@@ -21,33 +37,38 @@ function applyScale(el: HTMLElement) {
     let s = availableH / contentH;
     s = Math.max(MIN_SCALE, Math.min(MAX_SCALE, s));
 
-    el.style.transformOrigin = 'top center';
-    el.style.transform = `scale(${s})`;
-    el.style.width = `${100 / s}%`;
+    requestAnimationFrame(() => {
+      if (startToken !== getLiveToken()) return;
+
+      el.style.transformOrigin = 'top center';
+      el.style.transform = `scale(${s})`;
+      el.style.width = `${100 / s}%`;
+    });
   });
 }
 
 export function usePrintSheetScale(sheetRef: RefObject<HTMLElement | null>): void {
   useEffect(() => {
-    let pending = false;
+    let liveToken = 0;
+    const getLiveToken = () => liveToken;
 
-    const schedule = () => {
-      if (pending) return;
-      pending = true;
-      requestAnimationFrame(() => {
-        requestAnimationFrame(() => {
-          pending = false;
-          const sheet = sheetRef.current;
-          if (sheet) applyScale(sheet);
-        });
-      });
+    const invalidate = () => {
+      liveToken++;
+      const el = sheetRef.current;
+      if (el) clearSheetStyles(el);
     };
 
-    const clear = () => {
-      const el = sheetRef.current;
-      if (!el) return;
-      el.style.transform = '';
-      el.style.width = '';
+    const schedule = () => {
+      const startToken = liveToken;
+      requestAnimationFrame(() => {
+        if (startToken !== getLiveToken()) return;
+        requestAnimationFrame(() => {
+          if (startToken !== getLiveToken()) return;
+          const sheet = sheetRef.current;
+          if (!sheet) return;
+          applyScale(sheet, startToken, getLiveToken);
+        });
+      });
     };
 
     const beforePrint = () => schedule();
@@ -56,12 +77,15 @@ export function usePrintSheetScale(sheetRef: RefObject<HTMLElement | null>): voi
       typeof window.matchMedia !== 'undefined' ? window.matchMedia('print') : null;
 
     const onMediaChange = () => {
-      if (mql?.matches) schedule();
-      else clear();
+      if (mql?.matches) {
+        schedule();
+      } else {
+        invalidate();
+      }
     };
 
     window.addEventListener('beforeprint', beforePrint);
-    window.addEventListener('afterprint', clear);
+    window.addEventListener('afterprint', invalidate);
 
     if (mql?.addEventListener) {
       mql.addEventListener('change', onMediaChange);
@@ -71,13 +95,13 @@ export function usePrintSheetScale(sheetRef: RefObject<HTMLElement | null>): voi
 
     return () => {
       window.removeEventListener('beforeprint', beforePrint);
-      window.removeEventListener('afterprint', clear);
+      window.removeEventListener('afterprint', invalidate);
       if (mql?.removeEventListener) {
         mql.removeEventListener('change', onMediaChange);
       } else if (mql?.removeListener) {
         mql.removeListener(onMediaChange);
       }
-      clear();
+      invalidate();
     };
   }, [sheetRef]);
 }
