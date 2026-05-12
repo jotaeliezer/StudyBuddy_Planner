@@ -191,10 +191,22 @@ export function WeeklyView({ tasks, courses, categories, onAddTask, onToggleTask
             <Printer className="w-6 h-6" />
           </button>
           <div className="h-6 w-px bg-gray-300 dark:bg-zinc-700 mr-2"></div>
-          <button onClick={prevWeek} className="p-2 rounded-2xl glass hover:bg-white dark:hover:bg-zinc-800 text-gray-600 dark:text-gray-300 transition-colors">
+          <button
+            type="button"
+            aria-label="Previous week"
+            title="Previous week"
+            onClick={prevWeek}
+            className="planner-nav-arrow p-2 rounded-2xl glass text-gray-600 dark:text-gray-300"
+          >
             <ChevronLeft className="w-6 h-6" />
           </button>
-          <button onClick={nextWeek} className="p-2 rounded-2xl glass hover:bg-white dark:hover:bg-zinc-800 text-gray-600 dark:text-gray-300 transition-colors">
+          <button
+            type="button"
+            aria-label="Next week"
+            title="Next week"
+            onClick={nextWeek}
+            className="planner-nav-arrow p-2 rounded-2xl glass text-gray-600 dark:text-gray-300"
+          >
             <ChevronRight className="w-6 h-6" />
           </button>
         </div>

@@ -73,8 +73,8 @@ export function MoodModal({ isOpen, onClose, onSave, currentMood }: MoodModalPro
                 className={cn(
                   "flex flex-col items-center justify-center gap-2 p-3 rounded-2xl border-2 transition-all duration-300",
                   selectedMood === m.type 
-                    ? cn(m.color, "scale-105 shadow-md") 
-                    : "bg-gray-50 dark:bg-zinc-800 border-transparent hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-400 dark:text-gray-500 hover:scale-105"
+                    ? cn(m.color, "[transform:translateY(-2px)_scale(1.05)] shadow-md") 
+                    : "bg-gray-50 dark:bg-zinc-800 border-transparent hover:bg-gray-100 dark:hover:bg-zinc-700 text-gray-400 dark:text-gray-500 hover:[transform:translateY(-2px)_scale(1.05)]"
                 )}
               >
                 <span className="text-3xl">{m.emoji}</span>

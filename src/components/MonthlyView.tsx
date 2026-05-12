@@ -94,7 +94,7 @@ export function MonthlyView({ tasks, courses, categories, onAddTask, onTaskClick
           <button
             type="button"
             onClick={prevMonth}
-            className="p-2 rounded-2xl glass hover:bg-white dark:hover:bg-zinc-800 text-gray-600 dark:text-gray-300 transition-colors"
+            className="planner-nav-arrow p-2 rounded-2xl glass text-gray-600 dark:text-gray-300"
             aria-label="Previous month"
             title="Previous month"
           >
@@ -103,7 +103,7 @@ export function MonthlyView({ tasks, courses, categories, onAddTask, onTaskClick
           <button
             type="button"
             onClick={nextMonth}
-            className="p-2 rounded-2xl glass hover:bg-white dark:hover:bg-zinc-800 text-gray-600 dark:text-gray-300 transition-colors"
+            className="planner-nav-arrow p-2 rounded-2xl glass text-gray-600 dark:text-gray-300"
             aria-label="Next month"
             title="Next month"
           >
