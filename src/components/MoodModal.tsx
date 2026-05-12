@@ -2,8 +2,9 @@ import React, { useState } from 'react';
 import { DailyMood, Mood } from '../types';
 import { format } from 'date-fns';
 import { X } from 'lucide-react';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
 import { cn } from '../lib/utils';
+import { MOOD_ENTRIES } from '../constants/moods';
 
 interface MoodModalProps {
   isOpen: boolean;
@@ -11,22 +12,6 @@ interface MoodModalProps {
   onSave: (mood: DailyMood) => void;
   currentMood?: Mood;
 }
-
-const MOODS: { type: Mood; emoji: string; label: string; color: string }[] = [
-  { type: 'happy', emoji: '😊', label: 'Happy', color: 'bg-green-100 text-green-700 border-green-200' },
-  { type: 'joyful', emoji: '😁', label: 'Joyful', color: 'bg-emerald-100 text-emerald-700 border-emerald-200' },
-  { type: 'excited', emoji: '🤩', label: 'Excited', color: 'bg-yellow-100 text-yellow-700 border-yellow-200' },
-  { type: 'loved', emoji: '🥰', label: 'Loved', color: 'bg-pink-100 text-pink-700 border-pink-200' },
-  { type: 'creative', emoji: '✨', label: 'Creative', color: 'bg-fuchsia-100 text-fuchsia-700 border-fuchsia-200' },
-  { type: 'focused', emoji: '🤓', label: 'Focused', color: 'bg-indigo-100 text-indigo-700 border-indigo-200' },
-  { type: 'neutral', emoji: '😐', label: 'Neutral', color: 'bg-gray-100 text-gray-700 border-gray-200' },
-  { type: 'tired', emoji: '🥱', label: 'Tired', color: 'bg-slate-200 text-slate-700 border-slate-300' },
-  { type: 'stressed', emoji: '😖', label: 'Stressed', color: 'bg-orange-100 text-orange-700 border-orange-200' },
-  { type: 'anxious', emoji: '😰', label: 'Anxious', color: 'bg-amber-100 text-amber-700 border-amber-200' },
-  { type: 'sad', emoji: '😢', label: 'Sad', color: 'bg-blue-100 text-blue-700 border-blue-200' },
-  { type: 'angry', emoji: '😠', label: 'Angry', color: 'bg-red-100 text-red-700 border-red-200' },
-  { type: 'sick', emoji: '🤒', label: 'Sick', color: 'bg-lime-100 text-lime-700 border-lime-200' },
-];
 
 export function MoodModal({ isOpen, onClose, onSave, currentMood }: MoodModalProps) {
   const [selectedMood, setSelectedMood] = useState<Mood | undefined>(currentMood);
@@ -65,7 +50,7 @@ export function MoodModal({ isOpen, onClose, onSave, currentMood }: MoodModalPro
           </p>
           
           <div className="grid grid-cols-4 gap-3">
-            {MOODS.map(m => (
+            {MOOD_ENTRIES.map(m => (
               <button
                 key={m.type}
                 type="button"
@@ -78,20 +63,23 @@ export function MoodModal({ isOpen, onClose, onSave, currentMood }: MoodModalPro
                 )}
               >
                 <span className="text-3xl">{m.emoji}</span>
-                <span className="text-xs font-bold">{m.label}</span>
+                <span className={cn(
+                  'text-[9px] uppercase font-black tracking-wide text-center opacity-70',
+                  selectedMood !== m.type && 'opacity-40'
+                )}>
+                  {m.label}
+                </span>
               </button>
             ))}
           </div>
-
-          <div className="mt-4 flex gap-3">
-            <button 
-              type="submit"
-              disabled={!selectedMood}
-              className="w-full py-4 rounded-2xl bg-gradient-to-r from-pink-400 to-purple-400 hover:from-pink-500 hover:to-purple-500 text-white font-bold text-lg transition-transform active:scale-95 disabled:opacity-50 shadow-[0_8px_30px_rgb(236,72,153,0.3)] disabled:shadow-none"
-            >
-              Save Mood
-            </button>
-          </div>
+          
+          <button 
+            type="submit"
+            disabled={!selectedMood}
+            className="w-full py-4 rounded-2xl bg-pink-500 text-white font-bold text-lg hover:bg-pink-600 shadow-lg hover:shadow-pink-300/40 transition-all active:scale-[0.98] disabled:opacity-30 disabled:shadow-none shrink-0"
+          >
+            Save Mood
+          </button>
         </form>
       </motion.div>
     </div>

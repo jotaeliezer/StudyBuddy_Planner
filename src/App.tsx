@@ -2,33 +2,20 @@ import { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { MonthlyView } from './components/MonthlyView';
 import { WeeklyView } from './components/WeeklyView';
+import { HomeView } from './components/HomeView';
 import { CourseManager } from './components/CourseManager';
 import { TaskModal } from './components/TaskModal';
 import { MoodModal } from './components/MoodModal';
 import { usePlannerData } from './hooks/usePlannerData';
 import { useConfirm } from './context/ConfirmContext';
-import { Task, Mood } from './types';
+import { Task } from './types';
 import { format } from 'date-fns';
-
-const MOODS = [
-  { type: 'happy', emoji: '😊' },
-  { type: 'joyful', emoji: '😁' },
-  { type: 'excited', emoji: '🤩' },
-  { type: 'loved', emoji: '🥰' },
-  { type: 'creative', emoji: '✨' },
-  { type: 'focused', emoji: '🤓' },
-  { type: 'neutral', emoji: '😐' },
-  { type: 'tired', emoji: '🥱' },
-  { type: 'stressed', emoji: '😖' },
-  { type: 'anxious', emoji: '😰' },
-  { type: 'sad', emoji: '😢' },
-  { type: 'angry', emoji: '😠' },
-  { type: 'sick', emoji: '🤒' }
-];
+import type { AppView } from './types/view';
+import { getMoodEmoji } from './constants/moods';
 
 export default function App() {
   const confirm = useConfirm();
-  const [currentView, setCurrentView] = useState<'month' | 'week' | 'courses' | 'settings'>('week');
+  const [currentView, setCurrentView] = useState<AppView>('week');
   
   const { 
     courses, addCourse, updateCourse, deleteCourse, reorderCourses,
@@ -100,11 +87,21 @@ export default function App() {
   };
 
   const handleExportData = () => {
+    let weekHeaders: Record<string, string> = {};
+    try {
+      const raw = localStorage.getItem('planner_week_headers');
+      if (raw) {
+        weekHeaders = JSON.parse(raw) as Record<string, string>;
+      }
+    } catch {
+      weekHeaders = {};
+    }
     const data = {
       courses,
       tasks,
       moods,
-      categories
+      categories,
+      weekHeaders,
     };
     const blob = new Blob([JSON.stringify(data, null, 2)], { type: "application/json" });
     const url = URL.createObjectURL(blob);
@@ -130,20 +127,29 @@ export default function App() {
   };
 
   const todayStr = format(new Date(), 'yyyy-MM-dd');
-  const todaysMood = moods.find(m => m.date === todayStr)?.mood;
-  const todaysMoodEmoji = MOODS.find(m => m.type === todaysMood)?.emoji;
+  const todaysMood = moods.find((m) => m.date === todayStr)?.mood;
+  const todaysMoodEmoji = getMoodEmoji(todaysMood);
 
   return (
-    <div className="flex h-screen bg-[#FFF9FB] dark:bg-[#18181b] overflow-hidden font-sans p-4 gap-4 transition-colors duration-300">
+    <div className="app-layout flex h-screen bg-[#FFF9FB] dark:bg-[#18181b] overflow-hidden font-sans p-4 gap-4 transition-colors duration-300">
       <Sidebar 
         currentView={currentView} 
         onViewChange={setCurrentView} 
         isDarkMode={isDarkMode}
         toggleDarkMode={() => setIsDarkMode(!isDarkMode)}
-        onOpenMood={() => setIsMoodModalOpen(true)}
       />
       
-      <main className="flex-1 overflow-y-auto no-scrollbar glass squircle p-6 shadow-sm border border-white/40 dark:border-white/10 relative z-10 w-full">
+      <main className="planner-main flex-1 overflow-y-auto no-scrollbar glass squircle p-6 shadow-sm border border-white/40 dark:border-white/10 relative z-10 w-full">
+        {currentView === 'home' && (
+          <HomeView
+            tasks={tasks}
+            courses={courses}
+            moods={moods}
+            onOpenMood={() => setIsMoodModalOpen(true)}
+            todaysMoodEmoji={todaysMoodEmoji}
+          />
+        )}
+
         {currentView === 'month' && (
           <MonthlyView 
             tasks={tasks} 
@@ -152,6 +158,7 @@ export default function App() {
             onAddTask={handleOpenModalForNewTask}
             onTaskClick={handleOpenModalForEdit}
             todaysMoodEmoji={todaysMoodEmoji}
+            onOpenMood={() => setIsMoodModalOpen(true)}
           />
         )}
         
@@ -168,6 +175,7 @@ export default function App() {
             onDeleteCourse={deleteCourse}
             onReorderCourses={reorderCourses}
             todaysMoodEmoji={todaysMoodEmoji}
+            onOpenMood={() => setIsMoodModalOpen(true)}
           />
         )}
         
