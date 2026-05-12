@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { format, addMonths, subMonths, startOfMonth, endOfMonth, eachDayOfInterval, isSameMonth, isSameDay, startOfWeek, endOfWeek } from 'date-fns';
-import { ChevronLeft, ChevronRight, Plus, Printer } from 'lucide-react';
+import { ChevronUp, ChevronDown, Plus, Printer } from 'lucide-react';
 import { Course, Task, CategoryDef } from '../types';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence } from 'motion/react';
@@ -41,37 +41,36 @@ export function MonthlyView({ tasks, courses, categories, onAddTask, onTaskClick
     }
 
     if (isScrolling[0]) return;
-    
-    // Only handle horizontal or vertical scroll if big enough, to avoid jitter
-    if (Math.abs(e.deltaY) > 20 || Math.abs(e.deltaX) > 20) {
+
+    if (Math.abs(e.deltaY) > 20) {
       isScrolling[1](true);
-      if (e.deltaY > 0 || e.deltaX > 0) {
+      if (e.deltaY > 0) {
         nextMonth();
       } else {
         prevMonth();
       }
-      setTimeout(() => isScrolling[1](false), 400); // Prevent scrolling too fast
+      setTimeout(() => isScrolling[1](false), 400);
     }
   };
 
   const variants = {
     enter: (direction: number) => {
       return {
-        x: direction > 0 ? 1000 : -1000,
+        y: direction > 0 ? 800 : -800,
         opacity: 0,
         scale: 0.95
       };
     },
     center: {
       zIndex: 1,
-      x: 0,
+      y: 0,
       opacity: 1,
       scale: 1
     },
     exit: (direction: number) => {
       return {
         zIndex: 0,
-        x: direction < 0 ? 1000 : -1000,
+        y: direction < 0 ? 800 : -800,
         opacity: 0,
         scale: 0.95
       };
@@ -92,11 +91,23 @@ export function MonthlyView({ tasks, courses, categories, onAddTask, onTaskClick
             <Printer className="w-6 h-6" />
           </button>
           <div className="h-6 w-px bg-gray-300 dark:bg-zinc-700 mr-2"></div>
-          <button onClick={prevMonth} className="p-2 rounded-2xl glass hover:bg-white dark:hover:bg-zinc-800 text-gray-600 dark:text-gray-300 transition-colors">
-            <ChevronLeft className="w-6 h-6" />
+          <button
+            type="button"
+            onClick={prevMonth}
+            className="p-2 rounded-2xl glass hover:bg-white dark:hover:bg-zinc-800 text-gray-600 dark:text-gray-300 transition-colors"
+            aria-label="Previous month"
+            title="Previous month"
+          >
+            <ChevronUp className="w-6 h-6" />
           </button>
-          <button onClick={nextMonth} className="p-2 rounded-2xl glass hover:bg-white dark:hover:bg-zinc-800 text-gray-600 dark:text-gray-300 transition-colors">
-            <ChevronRight className="w-6 h-6" />
+          <button
+            type="button"
+            onClick={nextMonth}
+            className="p-2 rounded-2xl glass hover:bg-white dark:hover:bg-zinc-800 text-gray-600 dark:text-gray-300 transition-colors"
+            aria-label="Next month"
+            title="Next month"
+          >
+            <ChevronDown className="w-6 h-6" />
           </button>
         </div>
       </div>

@@ -4,6 +4,7 @@ import { Course } from '../types';
 import { CourseModal } from './CourseModal';
 import { Reorder } from 'motion/react';
 import { cn } from '../lib/utils';
+import { useConfirm } from '../context/ConfirmContext';
 
 interface CourseManagerProps {
   courses: Course[];
@@ -22,6 +23,7 @@ export function CourseManager({
   onReorderCourses,
   todaysMoodEmoji,
 }: CourseManagerProps) {
+  const confirm = useConfirm();
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
   const [editingCourse, setEditingCourse] = useState<Course | undefined>(undefined);
 
@@ -118,14 +120,16 @@ export function CourseManager({
                     <button
                       type="button"
                       onPointerDown={(e) => e.stopPropagation()}
-                      onClick={() => {
-                        if (
-                          window.confirm(
-                            'Are you sure you want to delete this course? Tasks linked to it will be removed.'
-                          )
-                        ) {
-                          onDeleteCourse(course.id);
-                        }
+                      onClick={async () => {
+                        const ok = await confirm({
+                          title: 'Delete this course?',
+                          message:
+                            'Are you sure you want to delete this course? Tasks linked to it will be removed.',
+                          variant: 'danger',
+                          confirmLabel: 'Delete',
+                          cancelLabel: 'Cancel',
+                        });
+                        if (ok) onDeleteCourse(course.id);
                       }}
                       className="p-2 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-900/20 text-red-500 shadow-sm"
                       title="Delete course"

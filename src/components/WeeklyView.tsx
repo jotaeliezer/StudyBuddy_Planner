@@ -5,6 +5,7 @@ import { Course, Task, CategoryDef } from '../types';
 import { cn } from '../lib/utils';
 import { motion, AnimatePresence, Reorder } from 'motion/react';
 import { CourseModal } from './CourseModal';
+import { useConfirm } from '../context/ConfirmContext';
 
 interface WeeklyViewProps {
   tasks: Task[];
@@ -83,6 +84,7 @@ const WeeklyTaskBlock = ({ task, courses, categories, onToggle, onEdit, compact 
 }
 
 export function WeeklyView({ tasks, courses, categories, onAddTask, onToggleTaskCompletion, onEditTask, onAddCourse, onUpdateCourse, onDeleteCourse, onReorderCourses, todaysMoodEmoji }: WeeklyViewProps) {
+  const confirm = useConfirm();
   const [[currentDate, direction], setPage] = useState([new Date(), 0]);
   const isScrolling = useState(false);
   const [isCourseModalOpen, setIsCourseModalOpen] = useState(false);
@@ -264,10 +266,16 @@ export function WeeklyView({ tasks, courses, categories, onAddTask, onToggleTask
                       </button>
                       <button 
                         onPointerDown={(e) => e.stopPropagation()} 
-                        onClick={() => {
-                          if (window.confirm("Are you sure you want to delete this course? This will also remove its tasks.")) {
-                            onDeleteCourse?.(course.id);
-                          }
+                        onClick={async () => {
+                          const ok = await confirm({
+                            title: 'Delete this course?',
+                            message:
+                              'Are you sure you want to delete this course? This will also remove its tasks.',
+                            variant: 'danger',
+                            confirmLabel: 'Delete',
+                            cancelLabel: 'Cancel',
+                          });
+                          if (ok) onDeleteCourse?.(course.id);
                         }}
                         className="p-1 rounded bg-red-50 hover:bg-red-100 text-red-500 shadow-sm"
                       >

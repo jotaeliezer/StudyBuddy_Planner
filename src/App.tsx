@@ -6,6 +6,7 @@ import { CourseManager } from './components/CourseManager';
 import { TaskModal } from './components/TaskModal';
 import { MoodModal } from './components/MoodModal';
 import { usePlannerData } from './hooks/usePlannerData';
+import { useConfirm } from './context/ConfirmContext';
 import { Task, Mood } from './types';
 import { format } from 'date-fns';
 
@@ -26,6 +27,7 @@ const MOODS = [
 ];
 
 export default function App() {
+  const confirm = useConfirm();
   const [currentView, setCurrentView] = useState<'month' | 'week' | 'courses' | 'settings'>('week');
   
   const { 
@@ -269,8 +271,17 @@ export default function App() {
               
               <div className="mt-8 pt-6 border-t border-pink-100/50 dark:border-zinc-800 text-center">
                 <button 
-                  onClick={() => {
-                    if (window.confirm("Are you sure you want to delete all planner data? This cannot be undone.")) {
+                  type="button"
+                  onClick={async () => {
+                    const ok = await confirm({
+                      title: 'Clear all planner data?',
+                      message:
+                        'Are you sure you want to delete all planner data? This cannot be undone.',
+                      variant: 'danger',
+                      confirmLabel: 'Clear everything',
+                      cancelLabel: 'Cancel',
+                    });
+                    if (ok) {
                       localStorage.clear();
                       window.location.reload();
                     }
