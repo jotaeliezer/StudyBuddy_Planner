@@ -9,6 +9,8 @@ import { useConfirm } from '../context/ConfirmContext';
 import { usePrintSheetScale } from '../hooks/usePrintSheetScale';
 import { useWeekHeaderOverrides, weekHeaderKey } from '../hooks/useWeekHeaderOverrides';
 
+const WEEK_TASK_DRAG = 'application/x-studybuddy-task';
+
 interface WeeklyViewProps {
   tasks: Task[];
   courses: Course[];
@@ -22,9 +24,38 @@ interface WeeklyViewProps {
   onReorderCourses?: (courses: Course[]) => void;
   todaysMoodEmoji?: string;
   onOpenMood: () => void;
+  onRescheduleTask?: (taskId: string, next: { dueDate: string; courseId?: string }) => void;
 }
 
-const WeeklyTaskBlock = ({ task, courses, categories, onToggle, onEdit, compact }: any) => {
+function canReceiveTaskDrop(task: Task, courses: Course[], rowCourseId: string): boolean {
+  if (rowCourseId === 'other') {
+    return !courses.some((c) => c.id === task.courseId);
+  }
+  return true;
+}
+
+const WeeklyTaskBlock = ({
+  task,
+  courses,
+  categories,
+  onToggle,
+  onEdit,
+  compact,
+  enableDrag,
+  onDraggingChange,
+}: {
+  task: Task;
+  courses: Course[];
+  categories: CategoryDef[];
+  onToggle: (id: string) => void;
+  onEdit?: (task: Task) => void;
+  compact?: boolean;
+  enableDrag?: boolean;
+  /**
+   * Fired when draggable task starts/finishes dragging (clear on end for drop target hints).
+   */
+  onDraggingChange?: (taskIdOrNull: string | null) => void;
+}) => {
   const course = courses.find((c: any) => c.id === task.courseId);
   const categoryDef = categories?.find((c: any) => c.id === task.category);
   const categoryIcon = categoryDef?.icon || '📌';
@@ -41,15 +72,30 @@ const WeeklyTaskBlock = ({ task, courses, categories, onToggle, onEdit, compact 
 
   return (
     <div
+      draggable={Boolean(enableDrag && !task.completed)}
+      onDragStart={(e) => {
+        if (!enableDrag || task.completed) return;
+        e.stopPropagation();
+        e.dataTransfer.effectAllowed = 'move';
+        e.dataTransfer.setData(WEEK_TASK_DRAG, task.id);
+        onDraggingChange?.(task.id);
+      }}
+      onDragEnd={() => {
+        if (!enableDrag) return;
+        onDraggingChange?.(null);
+      }}
       className={cn(
         'group relative flex items-start gap-1.5 overflow-hidden rounded-xl border border-white/40 shadow-sm transition-all dark:border-white/10',
+        enableDrag && !task.completed && 'cursor-grab active:cursor-grabbing',
         compact ? 'min-h-[4rem] p-1.5' : 'p-2',
-        task.completed ? 'bg-gray-100/80 opacity-60 grayscale-[50%] dark:bg-zinc-800/80' : ''
+        task.completed ? 'cursor-default bg-gray-100/80 opacity-60 grayscale-[50%] dark:bg-zinc-800/80' : ''
       )}
       style={{ backgroundColor: task.completed ? undefined : course?.color || '#e2e8f0' }}
     >
       <button
         type="button"
+        onDragStart={(e) => e.preventDefault()}
+        onMouseDown={(e) => e.stopPropagation()}
         onClick={(e) => {
           e.stopPropagation();
           onToggle(task.id);
@@ -84,6 +130,8 @@ const WeeklyTaskBlock = ({ task, courses, categories, onToggle, onEdit, compact 
       {onEdit && (
         <button
           type="button"
+          onDragStart={(e) => e.preventDefault()}
+          onMouseDown={(e) => e.stopPropagation()}
           onClick={(e) => {
             e.stopPropagation();
             onEdit(task);
@@ -111,8 +159,12 @@ export function WeeklyView({
   onReorderCourses,
   todaysMoodEmoji,
   onOpenMood,
+  onRescheduleTask,
 }: WeeklyViewProps) {
   const confirm = useConfirm();
+  const enableTaskDrag = Boolean(onRescheduleTask);
+  const draggingTaskRef = useRef<string | null>(null);
+  const [taskDropHoverKey, setTaskDropHoverKey] = useState<string | null>(null);
   const printSheetRef = useRef<HTMLDivElement>(null);
   usePrintSheetScale(printSheetRef);
   const { displayTitleForWeek, setTitleForWeek } = useWeekHeaderOverrides();
@@ -204,6 +256,63 @@ export function WeeklyView({
   if (hasOtherTasks) {
     courseRows.push({ id: 'other', name: 'Other Tasks', color: '#9ca3af' } as Course);
   }
+
+  const taskCellDnDKey = (day: Date, courseId: string) => `${format(day, 'yyyy-MM-dd')}__${courseId}`;
+
+  const handleDraggingTaskChange = (id: string | null) => {
+    if (!enableTaskDrag) return;
+    draggingTaskRef.current = id;
+    if (id === null) setTaskDropHoverKey(null);
+  };
+
+  const handleTaskCellDragOver = (e: React.DragEvent, day: Date, course: Course) => {
+    if (!enableTaskDrag) return;
+    const draggedId = draggingTaskRef.current;
+    if (!draggedId) return;
+    const dragged = tasks.find((t) => t.id === draggedId);
+    if (!dragged || !canReceiveTaskDrop(dragged, courses, course.id)) {
+      e.preventDefault();
+      e.dataTransfer.dropEffect = 'none';
+      return;
+    }
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+    setTaskDropHoverKey(taskCellDnDKey(day, course.id));
+  };
+
+  const handleTaskCellDragLeave = (e: React.DragEvent, day: Date, course: Course) => {
+    if (!enableTaskDrag) return;
+    const key = taskCellDnDKey(day, course.id);
+    const rt = e.relatedTarget as Node | null;
+    if (!rt || !e.currentTarget.contains(rt)) {
+      setTaskDropHoverKey((prev) => (prev === key ? null : prev));
+    }
+  };
+
+  const handleTaskCellDrop = (e: React.DragEvent, day: Date, course: Course) => {
+    if (!enableTaskDrag || !onRescheduleTask) return;
+    e.preventDefault();
+    const taskId = e.dataTransfer.getData(WEEK_TASK_DRAG);
+    setTaskDropHoverKey(null);
+    const task = tasks.find((t) => t.id === taskId);
+    if (!task) return;
+
+    const dueDate = format(day, 'yyyy-MM-dd');
+    if (!canReceiveTaskDrop(task, courses, course.id)) return;
+
+    const taskInOtherRow = !courses.some((c) => c.id === task.courseId);
+    const isSameCell =
+      task.dueDate === dueDate &&
+      (course.id === 'other' ? taskInOtherRow : task.courseId === course.id);
+    if (isSameCell) return;
+
+    if (course.id === 'other') {
+      onRescheduleTask(taskId, { dueDate });
+      return;
+    }
+
+    onRescheduleTask(taskId, { dueDate, courseId: course.id });
+  };
 
   const variants = {
     enter: (dir: number) => ({
@@ -503,7 +612,15 @@ export function WeeklyView({
                               return (
                                 <div
                                   key={course.id}
-                                  className="group relative flex h-40 flex-col justify-start overflow-y-auto border-b border-pink-100/50 p-1.5 no-scrollbar dark:border-zinc-700/50"
+                                  className={cn(
+                                    'group relative flex h-40 flex-col justify-start overflow-y-auto border-b border-pink-100/50 p-1.5 no-scrollbar dark:border-zinc-700/50',
+                                    enableTaskDrag &&
+                                      taskDropHoverKey === taskCellDnDKey(day, course.id) &&
+                                      'ring-2 ring-pink-400/70 ring-inset dark:ring-pink-500/50'
+                                  )}
+                                  onDragOver={(e) => handleTaskCellDragOver(e, day, course)}
+                                  onDragLeave={(e) => handleTaskCellDragLeave(e, day, course)}
+                                  onDrop={(e) => handleTaskCellDrop(e, day, course)}
                                 >
                                   <div className="relative z-10 flex flex-col gap-1.5">
                                     {cellTasks
@@ -517,6 +634,8 @@ export function WeeklyView({
                                           onToggle={onToggleTaskCompletion}
                                           onEdit={onEditTask}
                                           compact
+                                          enableDrag={enableTaskDrag && !task.completed}
+                                          onDraggingChange={handleDraggingTaskChange}
                                         />
                                       ))}
                                   </div>

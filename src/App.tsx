@@ -176,6 +176,11 @@ export default function App() {
             onReorderCourses={reorderCourses}
             todaysMoodEmoji={todaysMoodEmoji}
             onOpenMood={() => setIsMoodModalOpen(true)}
+            onRescheduleTask={(taskId, next) => {
+              const task = tasks.find((t) => t.id === taskId);
+              if (!task) return;
+              updateTask({ ...task, ...next });
+            }}
           />
         )}
         

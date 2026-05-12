@@ -89,19 +89,9 @@ export function HomeView({
           Today&apos;s agenda
         </p>
         {todaysTasks.length === 0 ? (
-          <div className="mt-4">
-            {verse && (
-              <div className="rounded-2xl border border-pink-100/70 bg-white/60 p-6 dark:border-pink-900/40 dark:bg-zinc-900/40">
-                <p className="text-sm font-semibold text-pink-600 dark:text-pink-300">{verse.reference}</p>
-                <p className="mt-3 text-base leading-relaxed text-gray-700 dark:text-gray-200">
-                  {verse.text}
-                </p>
-                <p className="mt-4 text-xs text-gray-500 dark:text-gray-400">
-                  A little encouragement for your day—rest, peace, and steady hope.
-                </p>
-              </div>
-            )}
-          </div>
+          <p className="mt-4 text-sm text-gray-500 dark:text-gray-400">
+            Nothing scheduled yet today.
+          </p>
         ) : (
           <ul className="mt-4 flex flex-col gap-2">
             {todaysTasks.map((task) => {
@@ -132,6 +122,23 @@ export function HomeView({
           </ul>
         )}
       </div>
+
+      {verse && (
+        <div className="glass squircle rounded-3xl border border-white/40 p-6 shadow-sm dark:border-white/10">
+          <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
+            Verse of the day
+          </p>
+          <div className="mt-4 rounded-2xl border border-pink-100/70 bg-white/60 p-6 dark:border-pink-900/40 dark:bg-zinc-900/40">
+            <p className="text-sm font-semibold text-pink-600 dark:text-pink-300">{verse.reference}</p>
+            <p className="mt-3 text-base leading-relaxed text-gray-700 dark:text-gray-200">
+              {verse.text}
+            </p>
+            <p className="mt-4 text-xs text-gray-500 dark:text-gray-400">
+              A little encouragement for your day—rest, peace, and steady hope.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
