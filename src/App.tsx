@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Sidebar } from './components/Sidebar';
 import { MonthlyView } from './components/MonthlyView';
 import { WeeklyView } from './components/WeeklyView';
+import { CourseManager } from './components/CourseManager';
 import { TaskModal } from './components/TaskModal';
 import { MoodModal } from './components/MoodModal';
 import { usePlannerData } from './hooks/usePlannerData';
@@ -174,6 +175,7 @@ export default function App() {
             onAddCourse={addCourse} 
             onDeleteCourse={deleteCourse}
             onUpdateCourse={updateCourse}
+            onReorderCourses={reorderCourses}
             todaysMoodEmoji={todaysMoodEmoji}
           />
         )}
