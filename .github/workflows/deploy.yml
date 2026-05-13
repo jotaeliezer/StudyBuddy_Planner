@@ -27,6 +27,9 @@ jobs:
         run: npm ci
       - name: Build
         run: npm run build
+        env:
+          # Must match Pages URL segment: /<repo>/ (updates automatically when repo is renamed)
+          VITE_BASE: ${{ github.event.repository.name == format('{0}.github.io', github.repository_owner) && '/' || format('/{0}/', github.event.repository.name) }}
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
