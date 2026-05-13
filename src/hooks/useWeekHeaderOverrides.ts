@@ -1,5 +1,6 @@
 import { format } from 'date-fns';
 import { useCallback, useState } from 'react';
+import { safeLocalStorageGet, safeLocalStorageSet } from '../lib/safeStorage';
 
 const STORAGE_KEY = 'planner_week_headers';
 
@@ -10,11 +11,17 @@ export function weekHeaderKey(weekStart: Date): string {
 
 function loadMap(): Record<string, string> {
   try {
-    const raw = localStorage.getItem(STORAGE_KEY);
+    const raw = safeLocalStorageGet(STORAGE_KEY);
     if (!raw) return {};
     const parsed = JSON.parse(raw) as unknown;
     if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-      return parsed as Record<string, string>;
+      const out: Record<string, string> = {};
+      for (const [k, v] of Object.entries(parsed as Record<string, unknown>)) {
+        if (typeof k === 'string' && typeof v === 'string') {
+          out[k] = v;
+        }
+      }
+      return out;
     }
   } catch {
     /* ignore */
@@ -26,7 +33,7 @@ export function useWeekHeaderOverrides() {
   const [map, setMap] = useState<Record<string, string>>(loadMap);
 
   const persist = useCallback((next: Record<string, string>) => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(next));
+    safeLocalStorageSet(STORAGE_KEY, JSON.stringify(next));
     setMap(next);
   }, []);
 

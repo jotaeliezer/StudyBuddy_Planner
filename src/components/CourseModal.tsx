@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { Course } from '../types';
-import { cn } from '../lib/utils';
+import { cn, createId } from '../lib/utils';
 import { motion } from 'motion/react';
 
 const COLORS = [
@@ -44,7 +44,7 @@ export function CourseModal({ isOpen, onClose, onSave, existingCourse }: CourseM
   const handleSave = () => {
     if (!name.trim()) return;
     onSave({
-      id: existingCourse?.id || crypto.randomUUID(),
+      id: existingCourse?.id || createId(),
       name: name.trim(),
       color,
       icon,

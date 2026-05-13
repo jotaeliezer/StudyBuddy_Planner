@@ -12,6 +12,8 @@ import { Task } from './types';
 import { format } from 'date-fns';
 import type { AppView } from './types/view';
 import { getMoodEmoji } from './constants/moods';
+import { createId } from './lib/utils';
+import { safeLocalStorageGet } from './lib/safeStorage';
 
 export default function App() {
   const confirm = useConfirm();
@@ -57,16 +59,18 @@ export default function App() {
     const headers = ['ID', 'Title', 'Date', 'Time', 'Course', 'Category', 'Completed'];
     
     // Create rows
-    const rows = tasks.map(t => {
-      const courseName = courses.find(c => c.id === t.courseId)?.name || 'None';
-      const categoryName = categories.find(c => c.id === t.category)?.name || t.category;
+    const rows = tasks.map((t) => {
+      const courseName = courses.find((c) => c.id === t.courseId)?.name || 'None';
+      const catId = typeof t.category === 'string' ? t.category : t.category?.id ?? '';
+      const categoryName =
+        categories.find((c) => c.id === catId)?.name || String(catId);
       return [
         t.id,
         t.title.replace(/,/g, ''), // escape commas
         t.dueDate,
         t.time || '',
         courseName.replace(/,/g, ''),
-        categoryName,
+        String(categoryName).replace(/,/g, ''),
         t.completed ? 'Yes' : 'No'
       ];
     });
@@ -89,9 +93,16 @@ export default function App() {
   const handleExportData = () => {
     let weekHeaders: Record<string, string> = {};
     try {
-      const raw = localStorage.getItem('planner_week_headers');
+      const raw = safeLocalStorageGet('planner_week_headers');
       if (raw) {
-        weekHeaders = JSON.parse(raw) as Record<string, string>;
+        const parsed: unknown = JSON.parse(raw);
+        if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+          for (const [k, v] of Object.entries(parsed as Record<string, unknown>)) {
+            if (typeof k === 'string' && typeof v === 'string') {
+              weekHeaders[k] = v;
+            }
+          }
+        }
       }
     } catch {
       weekHeaders = {};
@@ -120,7 +131,7 @@ export default function App() {
     } else {
       addTask({
         ...taskData,
-        id: crypto.randomUUID(),
+        id: createId(),
         completed: false
       });
     }
