@@ -7,8 +7,12 @@ type State = { error: Error | null };
 export class AppErrorBoundary extends Component<Props, State> {
   state: State = { error: null };
 
-  static getDerivedStateFromError(error: Error): State {
-    return { error };
+  static getDerivedStateFromError(error: unknown): State {
+    const normalized =
+      error instanceof Error
+        ? error
+        : new Error(typeof error === 'string' ? error : JSON.stringify(error));
+    return { error: normalized };
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {

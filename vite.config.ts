@@ -5,8 +5,16 @@ import {defineConfig, loadEnv} from 'vite';
 
 export default defineConfig(({mode}) => {
   const env = loadEnv(mode, '.', '');
+  /** Explicit VITE_BASE wins; prod default is ./ so GH Pages works even if repo name/url drifts */
+  const envBase = process.env.VITE_BASE ?? env.VITE_BASE;
+  const base =
+    envBase !== undefined && String(envBase).trim() !== ''
+      ? String(envBase).trim()
+      : mode === 'production'
+        ? './'
+        : '/';
   return {
-    base: process.env.VITE_BASE ?? '/',
+    base,
     plugins: [react(), tailwindcss()],
     define: {
       'process.env.GEMINI_API_KEY': JSON.stringify(env.GEMINI_API_KEY),

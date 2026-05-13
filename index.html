@@ -7,6 +7,27 @@
     <link rel="icon" href="./favicon.svg" type="image/svg+xml" />
   </head>
   <body>
+    <noscript>This app requires JavaScript. Enable it to open StudyBuddy.</noscript>
+    <script>
+      window.addEventListener(
+        'error',
+        function (e) {
+          var t = e.target;
+          if (!t || t.tagName !== 'SCRIPT') return;
+          var root = document.getElementById('root');
+          if (root && !root.dataset.mounted) {
+            root.innerHTML =
+              '<div style="font-family:system-ui,sans-serif;padding:28px;margin:48px auto;max-width:480px;line-height:1.5">' +
+              '<h2 style="margin:0 0 14px;font-size:1.2rem;color:#222">StudyBuddy scripts did not load</h2>' +
+              '<p style="margin:0 0 10px;color:#444">Usually the site base URL doesn’t match the deployment (hard refresh Ctrl+F5, or redo GitHub Pages from the Actions build).</p>' +
+              '<p style="margin:0;font-size:.85rem;color:#666">' +
+              ((e.message || '').replace(/</g, '&lt;')) +
+              '</p></div>';
+          }
+        },
+        true
+      );
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

@@ -8,7 +8,8 @@ export function cn(...inputs: ClassValue[]) {
 /** Prefer `crypto.randomUUID()`; fallback for non-secure contexts or older runtimes. */
 export function createId(): string {
   try {
-    const c = typeof globalThis !== 'undefined' ? (globalThis as { crypto?: Crypto }).crypto : undefined;
+    const g = globalThis as Record<string, unknown>;
+    const c = g.crypto as { randomUUID?: () => string } | undefined;
     if (c?.randomUUID) return c.randomUUID();
   } catch {
     /* ignore */

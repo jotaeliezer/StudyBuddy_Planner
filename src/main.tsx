@@ -20,4 +20,5 @@ if (!rootEl) {
       </AppErrorBoundary>
     </StrictMode>
   );
+  rootEl.dataset.mounted = '1';
 }
