@@ -22,6 +22,9 @@ export const MOOD_ENTRIES: MoodDisplayEntry[] = [
   { type: 'sad', emoji: '😢', label: 'Sad', color: 'bg-blue-100 text-blue-700 border-blue-200' },
   { type: 'angry', emoji: '😠', label: 'Angry', color: 'bg-red-100 text-red-700 border-red-200' },
   { type: 'sick', emoji: '🤒', label: 'Sick', color: 'bg-lime-100 text-lime-700 border-lime-200' },
+  { type: 'motivated', emoji: '💪', label: 'Motivated', color: 'bg-violet-100 text-violet-700 border-violet-200' },
+  { type: 'grateful', emoji: '🙏', label: 'Grateful', color: 'bg-teal-100 text-teal-700 border-teal-200' },
+  { type: 'overwhelmed', emoji: '😵', label: 'Overwhelmed', color: 'bg-rose-100 text-rose-700 border-rose-200' },
 ];
 
 export function getMoodEmoji(mood?: Mood): string | undefined {

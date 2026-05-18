@@ -30,7 +30,7 @@ export type Sticker = {
   date: string;
 };
 
-export type Mood = 'happy' | 'neutral' | 'sad' | 'stressed' | 'excited' | 'joyful' | 'creative' | 'tired' | 'focused' | 'anxious' | 'sick' | 'loved' | 'angry';
+export type Mood = 'happy' | 'neutral' | 'sad' | 'stressed' | 'excited' | 'joyful' | 'creative' | 'tired' | 'focused' | 'anxious' | 'sick' | 'loved' | 'angry' | 'motivated' | 'grateful' | 'overwhelmed';
 
 export type DailyMood = {
   date: string;
