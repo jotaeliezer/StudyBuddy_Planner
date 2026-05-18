@@ -17,7 +17,26 @@ const COLORS = [
   '#FF9AA2',
 ];
 
-const EMOJIS = ['🔬', '💻', '🎨', '📚', '📐', '⚽', '🎭', '🌎', '🧬', '🎵'];
+const EMOJIS = [
+  // Science & Nature
+  '🔬', '🧬', '🧪', '⚗️', '🔭', '🌡️', '🌿', '🌊', '🌋', '🐾',
+  // Technology & Engineering
+  '💻', '🖥️', '📱', '⌨️', '🤖', '🔧', '⚙️', '🛠️', '💡', '🔌',
+  // Arts & Creativity
+  '🎨', '🖌️', '🎭', '🎬', '📸', '✏️', '🖊️', '🎪', '🪄', '🎠',
+  // Literature & Language
+  '📚', '📖', '✍️', '📝', '🗣️', '📰', '🗞️', '📜', '📑', '🔖',
+  // Math & Logic
+  '📐', '📏', '🔢', '📊', '📈', '🧮', '♾️', '🎯', '🔣', '🧩',
+  // Sports & Wellness
+  '⚽', '🏃', '🏋️', '🧘', '🏊', '🚴', '🎾', '🏀', '⚾', '🥊',
+  // Music & Performance
+  '🎵', '🎸', '🎹', '🥁', '🎺', '🎻', '🎤', '🎧', '🎼', '🪗',
+  // Geography & Social Studies
+  '🌎', '🗺️', '🏛️', '⚔️', '🌍', '🗼', '🏙️', '🧭', '🌐', '🏺',
+  // General Academic
+  '🎓', '🏫', '📋', '🗂️', '🔑', '💎', '🌟', '🦋', '🌸', '🍀',
+];
 
 export interface CourseModalProps {
   isOpen: boolean;
@@ -98,20 +117,22 @@ export function CourseModal({ isOpen, onClose, onSave, existingCourse }: CourseM
           </div>
           <div className="space-y-2">
             <label className="text-sm font-bold text-gray-500 uppercase tracking-wider">Icon</label>
-            <div className="flex flex-wrap gap-2">
-              {EMOJIS.map((e) => (
-                <button
-                  key={e}
-                  type="button"
-                  onClick={() => setIcon(e)}
-                  className={cn(
-                    'w-10 h-10 rounded-xl text-xl flex items-center justify-center hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors',
-                    icon === e ? 'bg-gray-100 dark:bg-zinc-800 shadow-inner' : ''
-                  )}
-                >
-                  {e}
-                </button>
-              ))}
+            <div className="max-h-48 overflow-y-auto rounded-xl border border-gray-100 dark:border-zinc-700 p-1 no-scrollbar">
+              <div className="flex flex-wrap gap-1.5">
+                {EMOJIS.map((e) => (
+                  <button
+                    key={e}
+                    type="button"
+                    onClick={() => setIcon(e)}
+                    className={cn(
+                      'w-10 h-10 rounded-xl text-xl flex items-center justify-center hover:bg-gray-100 dark:hover:bg-zinc-800 transition-colors',
+                      icon === e ? 'bg-pink-100 dark:bg-pink-900/40 ring-2 ring-pink-400 shadow-inner' : ''
+                    )}
+                  >
+                    {e}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
           <button

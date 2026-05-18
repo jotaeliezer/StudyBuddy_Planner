@@ -29,8 +29,8 @@ const DatePicker = ({ value, onChange }: { value: string, onChange: (v: string) 
   
   const monthStart = startOfMonth(currentMonth);
   const monthEnd = endOfMonth(monthStart);
-  const startDate = startOfWeek(monthStart);
-  const endDate = endOfWeek(monthEnd);
+  const startDate = startOfWeek(monthStart, { weekStartsOn: 1 });
+  const endDate = endOfWeek(monthEnd, { weekStartsOn: 1 });
   
   const days = eachDayOfInterval({ start: startDate, end: endDate });
 
@@ -65,7 +65,7 @@ const DatePicker = ({ value, onChange }: { value: string, onChange: (v: string) 
                </div>
                
                <div className="grid grid-cols-7 text-center mb-2">
-                 {['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'].map(d => (
+                 {['Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa', 'Su'].map(d => (
                    <div key={d} className="text-xs font-bold text-pink-300 dark:text-pink-600">{d}</div>
                  ))}
                </div>
@@ -101,37 +101,50 @@ const DatePicker = ({ value, onChange }: { value: string, onChange: (v: string) 
 const CourseSelect = ({ courses, value, onChange }: { courses: Course[], value: string, onChange: (v: string) => void }) => {
   const [open, setOpen] = useState(false);
   const selectedCourse = courses.find(c => c.id === value);
-  
+  const isNoneSelected = !value || !selectedCourse;
+
   return (
     <div className="relative z-10">
-      <div 
+      <div
         onClick={() => setOpen(!open)}
         className="w-full px-4 py-3 rounded-2xl bg-gray-50 dark:bg-zinc-900/50 hover:bg-white dark:hover:bg-zinc-800 border-2 border-transparent focus-within:border-pink-300 dark:focus-within:border-pink-500/50 outline-none font-medium text-gray-800 dark:text-gray-200 transition-all shadow-inner cursor-pointer flex justify-between items-center"
       >
-        <span>{selectedCourse ? selectedCourse.name : (courses.length === 0 ? 'Please add a course first' : 'Select a course...')}</span>
+        <span className={isNoneSelected ? 'text-gray-400 dark:text-gray-500' : ''}>
+          {selectedCourse ? selectedCourse.name : (courses.length === 0 ? 'No courses yet — add one first' : 'No colour')}
+        </span>
         <div className="flex items-center gap-2">
-          {selectedCourse && (
+          {selectedCourse ? (
             <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: selectedCourse.color }} />
+          ) : (
+            <div className="w-3 h-3 rounded-full border-2 border-dashed border-gray-300 dark:border-zinc-600" />
           )}
           <ChevronDown className="w-4 h-4 text-gray-400 dark:text-gray-500" />
         </div>
       </div>
-      
+
       <AnimatePresence>
-        {open && courses.length > 0 && (
+        {open && (
           <>
             <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />
-            <motion.div 
+            <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -10 }}
               className="absolute top-14 left-0 w-full bg-white dark:bg-zinc-900 rounded-[24px] shadow-[0_8px_30px_rgb(0,0,0,0.12)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.5)] border border-pink-100 dark:border-zinc-700 overflow-hidden z-50 flex flex-col max-h-[200px] overflow-y-auto no-scrollbar"
             >
+              {/* No colour option */}
+              <div
+                onClick={() => { onChange(''); setOpen(false); }}
+                className={`px-4 py-3 hover:bg-pink-50 dark:hover:bg-zinc-800 cursor-pointer flex justify-between items-center transition-colors border-b border-pink-50/50 dark:border-zinc-800/50 ${isNoneSelected ? 'bg-pink-50/50 dark:bg-zinc-800/50' : ''}`}
+              >
+                <span className="font-medium text-gray-400 dark:text-gray-500">No colour</span>
+                <div className="w-3 h-3 rounded-full border-2 border-dashed border-gray-300 dark:border-zinc-600" />
+              </div>
               {courses.map(c => (
-                <div 
-                  key={c.id} 
+                <div
+                  key={c.id}
                   onClick={() => { onChange(c.id); setOpen(false); }}
-                  className="px-4 py-3 hover:bg-pink-50 dark:hover:bg-zinc-800 cursor-pointer flex justify-between items-center transition-colors border-b border-pink-50/50 dark:border-zinc-800/50 last:border-b-0"
+                  className={`px-4 py-3 hover:bg-pink-50 dark:hover:bg-zinc-800 cursor-pointer flex justify-between items-center transition-colors border-b border-pink-50/50 dark:border-zinc-800/50 last:border-b-0 ${value === c.id ? 'bg-pink-50/50 dark:bg-zinc-800/50' : ''}`}
                 >
                   <span className="font-medium text-gray-700 dark:text-gray-200">{c.name}</span>
                   <div className="w-3 h-3 rounded-full shadow-sm" style={{ backgroundColor: c.color }} />
@@ -287,7 +300,7 @@ export function TaskModal({ isOpen, onClose, onSave, onDelete, courses, categori
         setTitle('');
         setDate(initialDate ? format(initialDate, 'yyyy-MM-dd') : format(new Date(), 'yyyy-MM-dd'));
         setTime(initialTime || '');
-        setCourseId(initialCourseId || courses[0]?.id || '');
+        setCourseId(initialCourseId || '');
         setCategory('Homework');
       }
     }
@@ -297,7 +310,7 @@ export function TaskModal({ isOpen, onClose, onSave, onDelete, courses, categori
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!title.trim() || !courseId) return;
+    if (!title.trim()) return;
     onSave({
       title: title.trim(),
       dueDate: date,
@@ -394,9 +407,9 @@ export function TaskModal({ isOpen, onClose, onSave, onDelete, courses, categori
               >
                 Cancel
               </button>
-              <button 
+              <button
                 type="submit"
-                disabled={!title.trim() || !courseId}
+                disabled={!title.trim()}
                 className="px-6 py-3 rounded-2xl bg-pink-400 hover:bg-pink-500 text-white font-bold transition-transform active:scale-95 disabled:opacity-50 shadow-md hover:shadow-lg disabled:hover:shadow-md"
               >
                 Save
