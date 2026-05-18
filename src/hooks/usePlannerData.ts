@@ -2,11 +2,7 @@ import { useState, useEffect } from 'react';
 import { Course, Task, Sticker, DailyMood, CategoryDef } from '../types';
 import { safeLocalStorageGet, safeLocalStorageSet } from '../lib/safeStorage';
 
-const DEFAULT_COURSES: Course[] = [
-  { id: '1', name: 'Art History', color: '#FFD1DC' },
-  { id: '2', name: 'Calculus', color: '#AEC6CF' },
-  { id: '3', name: 'Literature', color: '#C1E1C1' },
-];
+const DEFAULT_COURSES: Course[] = [];
 
 const DEFAULT_CATEGORIES: CategoryDef[] = [
   { id: 'Homework', name: 'Homework', color: '#bfdbfe', icon: '📚' },
@@ -57,13 +53,12 @@ function isCategoryDef(v: unknown): v is CategoryDef {
 function loadCourses(): Course[] {
   try {
     const raw = safeLocalStorageGet('planner_courses');
-    if (!raw) return DEFAULT_COURSES;
+    if (!raw) return [];
     const parsed: unknown = JSON.parse(raw);
-    if (!Array.isArray(parsed)) return DEFAULT_COURSES;
-    const list = parsed.filter(isCourse);
-    return list.length > 0 ? list : DEFAULT_COURSES;
+    if (!Array.isArray(parsed)) return [];
+    return parsed.filter(isCourse);
   } catch {
-    return DEFAULT_COURSES;
+    return [];
   }
 }
 

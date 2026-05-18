@@ -523,9 +523,30 @@ export function WeeklyView({
         <div className="print-sheet-outer flex min-h-0 flex-1 flex-col overflow-hidden">
           <div ref={printSheetRef} className="print-sheet flex min-h-0 w-full flex-1 flex-col">
             <div className="glass squircle relative flex min-h-0 flex-1 flex-col overflow-hidden border border-white/40 shadow-sm dark:border-white/10">
+              {/* ── Empty state: no courses yet ── */}
+              {courses.length === 0 && (
+                <div className="flex flex-1 flex-col items-center justify-center gap-5 p-8 text-center">
+                  <div className="text-6xl">🌸</div>
+                  <div>
+                    <p className="text-xl font-bold text-gray-700 dark:text-gray-200">Welcome to Bubu Planner!</p>
+                    <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">Add your first course to get started planning your week.</p>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={openAddCourse}
+                    className="rounded-2xl bg-pink-500 px-6 py-3 font-bold text-white shadow-md transition-colors hover:bg-pink-600"
+                  >
+                    + Add your first course
+                  </button>
+                </div>
+              )}
+
               <div
                 ref={scrollContainerRef}
-                className="flex flex-1 min-h-0 flex-col gap-3 overflow-y-auto p-3 no-scrollbar"
+                className={cn(
+                  'flex flex-1 min-h-0 flex-col gap-3 overflow-y-auto p-3 no-scrollbar',
+                  courses.length === 0 && 'hidden'
+                )}
               >
                 <AnimatePresence initial={false} custom={navDirection} mode="popLayout">
                 {weeksToRender.map(({ ws, days, isCurrentWeek }) => {
