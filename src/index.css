@@ -138,6 +138,35 @@ h1, h2, h3, h4, h5, h6 {
     scrollbar-width: none;  /* Firefox */
 }
 
+/* Thin styled scrollbar for emoji / content pickers */
+.scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #f9a8d4 transparent; /* Firefox: thumb track */
+}
+.scrollbar-thin::-webkit-scrollbar {
+  width: 5px;
+}
+.scrollbar-thin::-webkit-scrollbar-track {
+  background: transparent;
+  border-radius: 999px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #f9a8d4;
+  border-radius: 999px;
+}
+.scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #f472b6;
+}
+.dark .scrollbar-thin {
+  scrollbar-color: #9d174d transparent;
+}
+.dark .scrollbar-thin::-webkit-scrollbar-thumb {
+  background: #9d174d;
+}
+.dark .scrollbar-thin::-webkit-scrollbar-thumb:hover {
+  background: #be185d;
+}
+
 /* Interactive lift on all buttons (overridable with Tailwind utilities on the element) */
 @layer base {
   button:not(:disabled) {
