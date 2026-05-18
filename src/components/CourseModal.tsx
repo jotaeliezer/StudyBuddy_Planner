@@ -117,7 +117,7 @@ export function CourseModal({ isOpen, onClose, onSave, existingCourse }: CourseM
           </div>
           <div className="space-y-2">
             <label className="text-sm font-bold text-gray-500 uppercase tracking-wider">Icon</label>
-            <div className="max-h-48 overflow-y-auto rounded-xl border border-gray-100 dark:border-zinc-700 p-1 no-scrollbar">
+            <div className="max-h-48 overflow-y-auto rounded-xl border border-gray-100 dark:border-zinc-700 p-1 scrollbar-thin">
               <div className="flex flex-wrap gap-1.5">
                 {EMOJIS.map((e) => (
                   <button
