@@ -1,8 +1,13 @@
+import { useState, useEffect } from 'react';
 import { format, getDayOfYear } from 'date-fns';
 import { Smile } from 'lucide-react';
 import type { Course, DailyMood, Task } from '../types';
 import { getMoodEmoji, getMoodLabel } from '../constants/moods';
 import { COMFORT_VERSES } from '../data/comfortVerses';
+import { AFFIRMATIONS } from '../data/affirmations';
+import { HabitStrip } from './HabitStrip';
+import { CountdownCards } from './CountdownCards';
+import { MoodHeatmap } from './MoodHeatmap';
 import { cn } from '../lib/utils';
 
 interface HomeViewProps {
@@ -42,6 +47,27 @@ export function HomeView({
     ? COMFORT_VERSES[dayOfYear % COMFORT_VERSES.length]
     : undefined;
 
+  // Daily affirmation — rotates by day of year
+  const affirmation = AFFIRMATIONS[dayOfYear % AFFIRMATIONS.length];
+
+  // Today's intention — persisted per day
+  const intentionKey = `planner_intention_${todayStr}`;
+  const [intention, setIntention] = useState<string>(() => {
+    try { return localStorage.getItem(intentionKey) ?? ''; } catch { return ''; }
+  });
+  const [intentionInput, setIntentionInput] = useState(intention);
+  const [editingIntention, setEditingIntention] = useState(!intention);
+
+  useEffect(() => {
+    try { localStorage.setItem(intentionKey, intention); } catch {}
+  }, [intention, intentionKey]);
+
+  const saveIntention = () => {
+    const trimmed = intentionInput.trim();
+    setIntention(trimmed);
+    setEditingIntention(!trimmed);
+  };
+
   return (
     <div className="mx-auto flex h-full w-full max-w-2xl flex-col gap-6">
       <div className="no-print mb-2 flex shrink-0 items-center justify-between">
@@ -65,6 +91,59 @@ export function HomeView({
             <Smile className="h-6 w-6" />
           </button>
         )}
+      </div>
+
+      {/* Today's Intention */}
+      <div className="glass squircle rounded-3xl border border-white/40 dark:border-white/10 p-5 shadow-sm">
+        <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
+          Today&apos;s Intention
+        </p>
+        {intention && !editingIntention ? (
+          <div
+            className="cursor-pointer group"
+            onClick={() => { setIntentionInput(intention); setEditingIntention(true); }}
+          >
+            <p className="text-base font-semibold text-gray-800 dark:text-gray-100 leading-relaxed">
+              &ldquo;{intention}&rdquo;
+            </p>
+            <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-1 group-hover:text-pink-400 transition-colors">
+              Click to edit
+            </p>
+          </div>
+        ) : (
+          <div className="flex gap-2">
+            <input
+              autoFocus={editingIntention}
+              type="text"
+              value={intentionInput}
+              onChange={e => setIntentionInput(e.target.value)}
+              onKeyDown={e => {
+                if (e.key === 'Enter') saveIntention();
+                if (e.key === 'Escape' && intention) { setIntentionInput(intention); setEditingIntention(false); }
+              }}
+              placeholder="Set your intention for today..."
+              className="flex-1 rounded-xl bg-gray-50 dark:bg-zinc-800 px-3 py-2 text-sm font-medium outline-none border-2 border-transparent focus:border-pink-300 dark:focus:border-pink-500/50 text-gray-800 dark:text-gray-200"
+            />
+            <button
+              onClick={saveIntention}
+              className="px-4 py-2 rounded-xl bg-pink-100 dark:bg-pink-900/40 text-pink-600 dark:text-pink-300 text-sm font-bold hover:bg-pink-200 transition-colors"
+            >
+              Set
+            </button>
+          </div>
+        )}
+      </div>
+
+      {/* Daily Affirmation */}
+      <div className="glass squircle rounded-3xl border border-white/40 dark:border-white/10 p-5 shadow-sm">
+        <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-3">
+          Daily Affirmation
+        </p>
+        <div className="rounded-2xl border border-pink-100/70 bg-white/60 dark:border-pink-900/40 dark:bg-zinc-900/40 px-5 py-4">
+          <p className="text-base font-semibold leading-relaxed text-gray-700 dark:text-gray-200">
+            ✨ {affirmation}
+          </p>
+        </div>
       </div>
 
       {(moodEmoji || moodLabel) && (
@@ -122,6 +201,15 @@ export function HomeView({
           </ul>
         )}
       </div>
+
+      {/* Habit Strip */}
+      <HabitStrip />
+
+      {/* Countdown Cards */}
+      <CountdownCards />
+
+      {/* Mood Heatmap */}
+      <MoodHeatmap moods={moods} onOpenMood={onOpenMood} />
 
       {verse && (
         <div className="glass squircle rounded-3xl border border-white/40 p-6 shadow-sm dark:border-white/10">

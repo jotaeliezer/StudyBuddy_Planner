@@ -1,4 +1,4 @@
-import { CalendarDays, CalendarRange, Settings, Moon, Sun } from 'lucide-react';
+import { CalendarDays, CalendarRange, Settings, Moon, Sun, Timer } from 'lucide-react';
 import { cn } from '../lib/utils';
 import type { AppView } from '../types/view';
 
@@ -7,9 +7,10 @@ interface SidebarProps {
   onViewChange: (view: AppView) => void;
   isDarkMode: boolean;
   toggleDarkMode: () => void;
+  onOpenPomodoro: () => void;
 }
 
-export function Sidebar({ currentView, onViewChange, isDarkMode, toggleDarkMode }: SidebarProps) {
+export function Sidebar({ currentView, onViewChange, isDarkMode, toggleDarkMode, onOpenPomodoro }: SidebarProps) {
   const navItems: { id: AppView; label: string; icon: typeof CalendarRange }[] = [
     { id: 'week', label: 'Weekly', icon: CalendarRange },
     { id: 'month', label: 'Monthly', icon: CalendarDays },
@@ -56,6 +57,19 @@ export function Sidebar({ currentView, onViewChange, isDarkMode, toggleDarkMode 
       </nav>
 
       <div className="mt-auto w-full flex flex-col gap-4 items-center">
+        <div className="relative group w-full flex justify-center">
+          <button
+            type="button"
+            onClick={onOpenPomodoro}
+            className="p-3.5 rounded-2xl bg-white/60 dark:bg-zinc-800/60 hover:bg-white dark:hover:bg-zinc-800 text-gray-400 hover:text-pink-500 transition-all shadow-sm"
+          >
+            <Timer className="w-6 h-6" />
+          </button>
+          <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 px-4 py-2 bg-white dark:bg-zinc-800 rounded-2xl shadow-xl border border-pink-100 dark:border-white/10 text-sm font-bold text-pink-500 opacity-0 group-hover:opacity-100 transition-all pointer-events-none whitespace-nowrap z-[100] translate-x-[-10px] group-hover:translate-x-0">
+            Pomodoro Timer
+          </div>
+        </div>
+
         <div className="relative group w-full flex justify-center">
           <button
             onClick={() => onViewChange('settings')}

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@400;700&family=Cormorant+Garamond:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -25,8 +25,75 @@ html.dark {
   --color-text-muted: #8E8E8E;
 }
 
+:root {
+  --theme-bg: #FFF9FB;
+  --theme-bg-secondary: #f3e8ff10;
+  --theme-accent: #ec4899;
+  --theme-accent-hover: #db2777;
+  --theme-accent-light: #fce7f3;
+  --theme-accent-text: #be185d;
+  --theme-glass: rgba(255,255,255,0.65);
+  --theme-glass-dark: rgba(39,39,42,0.65);
+  --theme-card-border: rgba(255,255,255,0.9);
+}
+
+html.theme-cottagecore {
+  --theme-bg: #f5f0e8;
+  --theme-accent: #6b8f5e;
+  --theme-accent-hover: #527047;
+  --theme-accent-light: #d4e8cc;
+  --theme-accent-text: #3d5c35;
+  --theme-glass: rgba(240,235,222,0.72);
+}
+
+html.theme-dark-academia {
+  --theme-bg: #f2ead8;
+  --theme-accent: #9b6a2f;
+  --theme-accent-hover: #7d5425;
+  --theme-accent-light: #f0ddb0;
+  --theme-accent-text: #6b4820;
+  --theme-glass: rgba(242,234,214,0.72);
+}
+
+html.theme-y2k {
+  --theme-bg: #fff0fa;
+  --theme-accent: #d946ef;
+  --theme-accent-hover: #c026d3;
+  --theme-accent-light: #fae8ff;
+  --theme-accent-text: #a21caf;
+  --theme-glass: rgba(255,240,250,0.72);
+}
+
+html.theme-angel {
+  --theme-bg: #f0f6ff;
+  --theme-accent: #6366f1;
+  --theme-accent-hover: #4f46e5;
+  --theme-accent-light: #e0e7ff;
+  --theme-accent-text: #4338ca;
+  --theme-glass: rgba(240,246,255,0.72);
+}
+
+html.theme-cherry {
+  --theme-bg: #fff5f7;
+  --theme-accent: #f43f5e;
+  --theme-accent-hover: #e11d48;
+  --theme-accent-light: #ffe4e6;
+  --theme-accent-text: #be123c;
+  --theme-glass: rgba(255,245,247,0.72);
+}
+
+html.theme-noir {
+  --theme-bg: #1a0a2e;
+  --theme-accent: #a855f7;
+  --theme-accent-hover: #9333ea;
+  --theme-accent-light: #3b1f5e;
+  --theme-accent-text: #d8b4fe;
+  --theme-glass: rgba(30,15,50,0.80);
+}
+html.theme-noir body { color: #e9d5ff; }
+
 body {
-  background-color: var(--color-offwhite);
+  background-color: var(--theme-bg);
   color: var(--color-text-main);
   font-family: var(--font-sans);
   transition: background-color 0.3s, color 0.3s;
@@ -42,7 +109,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .glass {
-  background: rgba(255, 255, 255, 0.65);
+  background: var(--theme-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border: 1px solid rgba(255, 255, 255, 0.9);
