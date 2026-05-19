@@ -96,7 +96,26 @@ export function HomeView({
       {/* ── Bento grid ── */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 items-start">
 
-        {/* ① Intention ── col 1 */}
+        {/* ① Verse of the day ── full width at top */}
+        {verse && (
+          <div className="glass squircle border border-white/40 dark:border-white/10 p-5 shadow-sm md:col-span-2 lg:col-span-3">
+            <div className="flex items-center gap-2 mb-3">
+              <BookOpen className="h-3.5 w-3.5 text-pink-300" />
+              <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
+                Verse of the Day
+              </p>
+            </div>
+            <div className="rounded-2xl border border-pink-100/70 bg-white/60 dark:border-pink-900/30 dark:bg-zinc-900/40 px-5 py-4 flex gap-4 items-start">
+              <div className="text-3xl select-none">🕊️</div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-bold text-pink-500 dark:text-pink-300 mb-1">{verse.reference}</p>
+                <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-200">{verse.text}</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* ② Intention ── col 1 */}
         <div className="glass squircle border border-white/40 dark:border-white/10 p-5 shadow-sm flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <span className="text-base">🎯</span>
@@ -236,24 +255,6 @@ export function HomeView({
           <MoodHeatmap moods={moods} onOpenMood={onOpenMood} />
         </div>
 
-        {/* ⑦ Verse of the day ── full width */}
-        {verse && (
-          <div className="glass squircle border border-white/40 dark:border-white/10 p-5 shadow-sm md:col-span-2 lg:col-span-3">
-            <div className="flex items-center gap-2 mb-3">
-              <BookOpen className="h-3.5 w-3.5 text-pink-300" />
-              <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
-                Verse of the Day
-              </p>
-            </div>
-            <div className="rounded-2xl border border-pink-100/70 bg-white/60 dark:border-pink-900/30 dark:bg-zinc-900/40 px-5 py-4 flex gap-4 items-start">
-              <div className="text-3xl select-none">🕊️</div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-bold text-pink-500 dark:text-pink-300 mb-1">{verse.reference}</p>
-                <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-200">{verse.text}</p>
-              </div>
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );

@@ -145,7 +145,7 @@ function AppInner() {
   const todaysMoodEmoji = getMoodEmoji(todaysMood);
 
   return (
-    <div className="app-layout flex h-screen bg-[#FFF9FB] dark:bg-[#18181b] overflow-hidden font-sans p-4 gap-4 transition-colors duration-300">
+    <div className="app-layout flex h-screen overflow-hidden font-sans p-4 gap-4 transition-colors duration-300" style={{ backgroundColor: 'var(--theme-bg)' }}>
       <Sidebar
         currentView={currentView}
         onViewChange={setCurrentView}
@@ -219,24 +219,63 @@ function AppInner() {
 
             {/* Theme Panel */}
             <div className="glass squircle p-6 mb-8 border border-white/40 dark:border-white/10 shadow-sm">
-              <h3 className="font-bold text-lg text-gray-700 dark:text-gray-200 mb-4">🎨 Theme</h3>
-              <div className="grid grid-cols-4 gap-3">
-                {THEMES.map(theme => (
+              <h3 className="font-bold text-lg text-gray-700 dark:text-gray-200 mb-5">🎨 Theme</h3>
+
+              {/* Expressive group */}
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">
+                ✨ Expressive
+              </p>
+              <div className="grid grid-cols-4 gap-2 mb-5">
+                {THEMES.filter(t => t.vibe === 'expressive').map(theme => (
                   <button
                     key={theme.id}
                     onClick={() => setTheme(theme.id)}
                     className={cn(
                       'flex flex-col items-center gap-1.5 p-3 rounded-2xl border-2 transition-all',
                       themeId === theme.id
-                        ? 'border-pink-400 shadow-md'
-                        : 'border-transparent hover:border-pink-200 dark:hover:border-pink-800'
+                        ? 'shadow-md scale-105'
+                        : 'border-transparent opacity-80 hover:opacity-100 hover:scale-102'
                     )}
-                    style={{ backgroundColor: theme.preview }}
+                    style={{
+                      backgroundColor: theme.preview,
+                      borderColor: themeId === theme.id ? 'var(--theme-accent)' : 'transparent',
+                    }}
                   >
-                    <span className="text-2xl">{theme.emoji}</span>
+                    <span className="text-xl">{theme.emoji}</span>
                     <span
-                      className="text-[10px] font-bold text-center leading-tight"
-                      style={{ color: theme.id === 'noir' ? '#e9d5ff' : '#374151' }}
+                      className="text-[9px] font-bold text-center leading-tight"
+                      style={{ color: theme.darkText ? 'rgba(255,255,255,0.85)' : '#374151' }}
+                    >
+                      {theme.name}
+                    </span>
+                  </button>
+                ))}
+              </div>
+
+              {/* Bold & Minimal group */}
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">
+                ⚡ Bold &amp; Minimal
+              </p>
+              <div className="grid grid-cols-4 gap-2">
+                {THEMES.filter(t => t.vibe === 'bold').map(theme => (
+                  <button
+                    key={theme.id}
+                    onClick={() => setTheme(theme.id)}
+                    className={cn(
+                      'flex flex-col items-center gap-1.5 p-3 rounded-2xl border-2 transition-all',
+                      themeId === theme.id
+                        ? 'shadow-md scale-105'
+                        : 'border-transparent opacity-80 hover:opacity-100'
+                    )}
+                    style={{
+                      backgroundColor: theme.preview,
+                      borderColor: themeId === theme.id ? 'var(--theme-accent)' : 'transparent',
+                    }}
+                  >
+                    <span className="text-xl">{theme.emoji}</span>
+                    <span
+                      className="text-[9px] font-bold text-center leading-tight"
+                      style={{ color: theme.darkText ? 'rgba(255,255,255,0.85)' : '#374151' }}
                     >
                       {theme.name}
                     </span>
@@ -247,29 +286,66 @@ function AppInner() {
 
             {/* Font Panel */}
             <div className="glass squircle p-6 mb-8 border border-white/40 dark:border-white/10 shadow-sm">
-              <h3 className="font-bold text-lg text-gray-700 dark:text-gray-200 mb-4">✍️ Font</h3>
-              <div className="flex flex-col gap-2">
-                {FONTS.map(font => (
+              <h3 className="font-bold text-lg text-gray-700 dark:text-gray-200 mb-5">✍️ Font Style</h3>
+
+              {/* Soft group */}
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">
+                🌸 Soft &amp; Expressive
+              </p>
+              <div className="grid grid-cols-2 gap-2 mb-5">
+                {FONTS.filter(f => f.vibe === 'soft').map(font => (
                   <button
                     key={font.id}
                     onClick={() => setFont(font.id)}
                     className={cn(
-                      'flex items-center justify-between px-4 py-3 rounded-2xl border-2 transition-all text-left',
+                      'flex flex-col gap-0.5 px-4 py-3 rounded-2xl border-2 transition-all text-left',
                       fontId === font.id
-                        ? 'border-pink-400 bg-pink-50 dark:bg-pink-900/20'
-                        : 'border-transparent bg-white/50 dark:bg-zinc-800/50 hover:border-pink-200'
+                        ? 'shadow-sm'
+                        : 'border-transparent bg-white/50 dark:bg-zinc-800/50 hover:bg-white dark:hover:bg-zinc-800'
                     )}
+                    style={{
+                      borderColor: fontId === font.id ? 'var(--theme-accent)' : 'transparent',
+                      backgroundColor: fontId === font.id ? 'var(--theme-accent-light)' : undefined,
+                    }}
                   >
-                    <div>
-                      <p
-                        className="font-bold text-gray-800 dark:text-gray-100 text-base"
-                        style={{ fontFamily: font.cssValue }}
-                      >
-                        {font.label}
-                      </p>
-                      <p className="text-xs text-gray-400 dark:text-gray-500">{font.name}</p>
-                    </div>
-                    {fontId === font.id && <span className="text-pink-500 font-black">✓</span>}
+                    <p
+                      className="font-bold text-gray-800 dark:text-gray-100 text-base truncate"
+                      style={{ fontFamily: font.cssValue }}
+                    >
+                      {font.label}
+                    </p>
+                    <p className="text-[10px] text-gray-400 dark:text-gray-500">{font.name}</p>
+                  </button>
+                ))}
+              </div>
+
+              {/* Sharp group */}
+              <p className="text-[10px] font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500 mb-2">
+                ⚡ Bold &amp; Clean
+              </p>
+              <div className="grid grid-cols-2 gap-2">
+                {FONTS.filter(f => f.vibe === 'sharp').map(font => (
+                  <button
+                    key={font.id}
+                    onClick={() => setFont(font.id)}
+                    className={cn(
+                      'flex flex-col gap-0.5 px-4 py-3 rounded-2xl border-2 transition-all text-left',
+                      fontId === font.id
+                        ? 'shadow-sm'
+                        : 'border-transparent bg-white/50 dark:bg-zinc-800/50 hover:bg-white dark:hover:bg-zinc-800'
+                    )}
+                    style={{
+                      borderColor: fontId === font.id ? 'var(--theme-accent)' : 'transparent',
+                      backgroundColor: fontId === font.id ? 'var(--theme-accent-light)' : undefined,
+                    }}
+                  >
+                    <p
+                      className="font-bold text-gray-800 dark:text-gray-100 text-base truncate"
+                      style={{ fontFamily: font.cssValue }}
+                    >
+                      {font.label}
+                    </p>
+                    <p className="text-[10px] text-gray-400 dark:text-gray-500">{font.name}</p>
                   </button>
                 ))}
               </div>

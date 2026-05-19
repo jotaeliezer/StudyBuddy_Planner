@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@400;700&family=Cormorant+Garamond:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Lato:wght@400;700&family=Cormorant+Garamond:wght@400;600;700&family=Nunito:wght@400;600;700;800&family=Quicksand:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Oswald:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap');
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -91,6 +91,45 @@ html.theme-noir {
   --theme-glass: rgba(30,15,50,0.80);
 }
 html.theme-noir body { color: #e9d5ff; }
+
+/* ── Bold & Minimal (masculine-coded) ─────────────────────────────────── */
+
+html.theme-forest {
+  --theme-bg: #eef5ee;
+  --theme-accent: #15803d;
+  --theme-accent-hover: #166534;
+  --theme-accent-light: #dcfce7;
+  --theme-accent-text: #166534;
+  --theme-glass: rgba(238,245,238,0.72);
+}
+
+html.theme-ocean {
+  --theme-bg: #dbeafe;
+  --theme-accent: #1d4ed8;
+  --theme-accent-hover: #1e40af;
+  --theme-accent-light: #bfdbfe;
+  --theme-accent-text: #1e3a8a;
+  --theme-glass: rgba(219,234,254,0.72);
+}
+
+html.theme-carbon {
+  --theme-bg: #18202e;
+  --theme-accent: #f59e0b;
+  --theme-accent-hover: #d97706;
+  --theme-accent-light: #292f3d;
+  --theme-accent-text: #fbbf24;
+  --theme-glass: rgba(24,32,46,0.82);
+}
+html.theme-carbon body { color: #e2e8f0; }
+
+html.theme-ember {
+  --theme-bg: #fff7ed;
+  --theme-accent: #ea580c;
+  --theme-accent-hover: #c2410c;
+  --theme-accent-light: #ffedd5;
+  --theme-accent-text: #9a3412;
+  --theme-glass: rgba(255,247,237,0.72);
+}
 
 body {
   background-color: var(--theme-bg);

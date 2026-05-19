@@ -1,15 +1,21 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 
-export type ThemeId = 'default' | 'cottagecore' | 'dark-academia' | 'y2k' | 'angel' | 'cherry' | 'noir';
-export type FontId = 'quicksand' | 'playfair' | 'cormorant' | 'nunito';
+export type ThemeId =
+  | 'default' | 'cottagecore' | 'dark-academia' | 'y2k' | 'angel' | 'cherry' | 'noir'
+  | 'forest' | 'ocean' | 'carbon' | 'ember';
+
+export type FontId =
+  | 'quicksand' | 'nunito' | 'playfair' | 'cormorant'
+  | 'space-grotesk' | 'inter' | 'oswald' | 'roboto';
 
 interface ThemeEntry {
   id: ThemeId;
   name: string;
   emoji: string;
-  preview: string; // hex color for swatch
-  darkPreview?: string;
+  preview: string;   // hex for swatch bg
   cssClass: string;
+  vibe: 'expressive' | 'bold';
+  darkText?: boolean; // true = use white text on the swatch
 }
 
 interface FontEntry {
@@ -17,23 +23,36 @@ interface FontEntry {
   name: string;
   label: string;
   cssValue: string;
+  vibe: 'soft' | 'sharp';
 }
 
 export const THEMES: ThemeEntry[] = [
-  { id: 'default', name: 'Bubu Pink', emoji: '🌸', preview: '#FFF9FB', cssClass: '' },
-  { id: 'cottagecore', name: 'Cottagecore', emoji: '🌿', preview: '#f5f0e8', cssClass: 'theme-cottagecore' },
-  { id: 'dark-academia', name: 'Dark Academia', emoji: '📚', preview: '#f2ead8', cssClass: 'theme-dark-academia' },
-  { id: 'y2k', name: 'Soft Y2K', emoji: '✨', preview: '#fff0fa', cssClass: 'theme-y2k' },
-  { id: 'angel', name: 'Angel Mode', emoji: '👼', preview: '#f0f6ff', cssClass: 'theme-angel' },
-  { id: 'cherry', name: 'Cherry Blossom', emoji: '🌺', preview: '#fff5f7', cssClass: 'theme-cherry' },
-  { id: 'noir', name: 'Midnight Noir', emoji: '🌙', preview: '#1a0a2e', cssClass: 'theme-noir' },
+  // ── Expressive (originally feminine-coded) ──────────────────────────────
+  { id: 'default',       name: 'Bubu Pink',      emoji: '🌸', preview: '#FFF9FB', cssClass: '',                   vibe: 'expressive' },
+  { id: 'cottagecore',   name: 'Cottagecore',    emoji: '🌿', preview: '#f5f0e8', cssClass: 'theme-cottagecore',   vibe: 'expressive' },
+  { id: 'dark-academia', name: 'Dark Academia',  emoji: '📚', preview: '#f2ead8', cssClass: 'theme-dark-academia', vibe: 'expressive' },
+  { id: 'y2k',           name: 'Soft Y2K',       emoji: '✨', preview: '#fff0fa', cssClass: 'theme-y2k',           vibe: 'expressive' },
+  { id: 'angel',         name: 'Angel Mode',     emoji: '👼', preview: '#f0f6ff', cssClass: 'theme-angel',         vibe: 'expressive' },
+  { id: 'cherry',        name: 'Cherry Blossom', emoji: '🌺', preview: '#fff5f7', cssClass: 'theme-cherry',        vibe: 'expressive' },
+  { id: 'noir',          name: 'Midnight Noir',  emoji: '🌙', preview: '#1a0a2e', cssClass: 'theme-noir',          vibe: 'expressive', darkText: true },
+  // ── Bold & Minimal (masculine-coded) ────────────────────────────────────
+  { id: 'forest',        name: 'Forest',         emoji: '🌲', preview: '#eef5ee', cssClass: 'theme-forest',        vibe: 'bold' },
+  { id: 'ocean',         name: 'Deep Ocean',     emoji: '🌊', preview: '#dbeafe', cssClass: 'theme-ocean',         vibe: 'bold' },
+  { id: 'carbon',        name: 'Carbon',         emoji: '⚡', preview: '#18202e', cssClass: 'theme-carbon',        vibe: 'bold', darkText: true },
+  { id: 'ember',         name: 'Ember',          emoji: '🔥', preview: '#fff7ed', cssClass: 'theme-ember',         vibe: 'bold' },
 ];
 
 export const FONTS: FontEntry[] = [
-  { id: 'quicksand', name: 'Soft & Round', label: 'Quicksand', cssValue: '"Quicksand", ui-sans-serif, system-ui, sans-serif' },
-  { id: 'nunito', name: 'Friendly', label: 'Nunito', cssValue: '"Nunito", ui-sans-serif, system-ui, sans-serif' },
-  { id: 'playfair', name: 'Academic', label: 'Playfair Display', cssValue: '"Playfair Display", "Lato", ui-serif, serif' },
-  { id: 'cormorant', name: 'Dark Academia', label: 'Cormorant Garamond', cssValue: '"Cormorant Garamond", ui-serif, serif' },
+  // ── Soft & Expressive ───────────────────────────────────────────────────
+  { id: 'quicksand',    name: 'Soft & Round',  label: 'Quicksand',          cssValue: '"Quicksand", ui-sans-serif, system-ui, sans-serif',      vibe: 'soft' },
+  { id: 'nunito',       name: 'Friendly',      label: 'Nunito',             cssValue: '"Nunito", ui-sans-serif, system-ui, sans-serif',          vibe: 'soft' },
+  { id: 'playfair',     name: 'Academic',      label: 'Playfair Display',   cssValue: '"Playfair Display", "Lato", ui-serif, serif',             vibe: 'soft' },
+  { id: 'cormorant',    name: 'Dark Academia', label: 'Cormorant Garamond', cssValue: '"Cormorant Garamond", ui-serif, serif',                   vibe: 'soft' },
+  // ── Bold & Clean ─────────────────────────────────────────────────────────
+  { id: 'space-grotesk', name: 'Modern',    label: 'Space Grotesk', cssValue: '"Space Grotesk", ui-sans-serif, system-ui, sans-serif', vibe: 'sharp' },
+  { id: 'inter',         name: 'Clean',     label: 'Inter',         cssValue: '"Inter", ui-sans-serif, system-ui, sans-serif',         vibe: 'sharp' },
+  { id: 'oswald',        name: 'Strong',    label: 'Oswald',        cssValue: '"Oswald", ui-sans-serif, system-ui, sans-serif',        vibe: 'sharp' },
+  { id: 'roboto',        name: 'Technical', label: 'Roboto',        cssValue: '"Roboto", ui-sans-serif, system-ui, sans-serif',        vibe: 'sharp' },
 ];
 
 interface ThemeContextValue {
@@ -55,9 +74,7 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const theme = THEMES.find(t => t.id === themeId);
-    // Remove all theme classes
     THEMES.forEach(t => { if (t.cssClass) document.documentElement.classList.remove(t.cssClass); });
-    // Apply new theme class
     if (theme?.cssClass) document.documentElement.classList.add(theme.cssClass);
     try { localStorage.setItem('planner_theme', themeId); } catch {}
   }, [themeId]);
