@@ -526,9 +526,9 @@ export function WeeklyView({
               {/* ── Empty state: no courses yet ── */}
               {courses.length === 0 && (
                 <div className="flex flex-1 flex-col items-center justify-center gap-5 p-8 text-center">
-                  <div className="text-6xl">🌸</div>
+                  <div className="text-6xl">🗓️</div>
                   <div>
-                    <p className="text-xl font-bold text-gray-700 dark:text-gray-200">Welcome to Bubu Planner!</p>
+                    <p className="text-xl font-bold text-gray-700 dark:text-gray-200">Welcome to StudyBuddy Planner!</p>
                     <p className="mt-1 text-sm text-gray-400 dark:text-gray-500">Add your first course to get started planning your week.</p>
                   </div>
                   <button
