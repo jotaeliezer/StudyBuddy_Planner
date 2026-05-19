@@ -28,7 +28,7 @@ interface FontEntry {
 
 export const THEMES: ThemeEntry[] = [
   // ── Expressive (originally feminine-coded) ──────────────────────────────
-  { id: 'default',       name: 'Bubu Pink',      emoji: '🌸', preview: '#FFF9FB', cssClass: '',                   vibe: 'expressive' },
+  { id: 'default',       name: 'Blush Pink',     emoji: '🌸', preview: '#FFF9FB', cssClass: '',                   vibe: 'expressive' },
   { id: 'cottagecore',   name: 'Cottagecore',    emoji: '🌿', preview: '#f5f0e8', cssClass: 'theme-cottagecore',   vibe: 'expressive' },
   { id: 'dark-academia', name: 'Dark Academia',  emoji: '📚', preview: '#f2ead8', cssClass: 'theme-dark-academia', vibe: 'expressive' },
   { id: 'y2k',           name: 'Soft Y2K',       emoji: '✨', preview: '#fff0fa', cssClass: 'theme-y2k',           vibe: 'expressive' },
