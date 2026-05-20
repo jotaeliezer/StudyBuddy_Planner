@@ -64,55 +64,58 @@ export function MoodHeatmap({ moods, onOpenMood }: MoodHeatmapProps) {
         )}
       </div>
 
-      {/* Day-of-week labels */}
-      <div className="grid grid-cols-7 mb-1 gap-1">
-        {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => (
-          <div key={i} className="text-center text-[9px] font-bold text-gray-300 dark:text-zinc-600">{d}</div>
-        ))}
-      </div>
-
-      {/* Heatmap grid */}
-      <div className="flex flex-col gap-1">
-        {weeks.map((week, wi) => (
-          <div key={wi} className="grid grid-cols-7 gap-1">
-            {week.map(day => {
-              const dateStr = format(day, 'yyyy-MM-dd');
-              const mood = moodByDate[dateStr] as Mood | undefined;
-              const score = mood ? MOOD_SCORE[mood] : undefined;
-              const emoji = getMoodEmoji(mood);
-              const isToday = dateStr === format(today, 'yyyy-MM-dd');
-              return (
-                <button
-                  key={dateStr}
-                  onClick={isToday ? onOpenMood : undefined}
-                  title={mood ? `${format(day, 'MMM d')} — ${mood}` : format(day, 'MMM d')}
-                  className={cn(
-                    'aspect-square rounded-md transition-all flex items-center justify-center',
-                    scoreToColor(score),
-                    isToday && 'ring-2 ring-pink-400 ring-offset-1',
-                    isToday && !mood && 'opacity-60 cursor-pointer hover:opacity-100',
-                    !isToday && 'cursor-default'
-                  )}
-                >
-                  {emoji && score !== undefined ? (
-                    <span className="text-[10px] leading-none">{emoji}</span>
-                  ) : null}
-                </button>
-              );
-            })}
-          </div>
-        ))}
-      </div>
-
-      {/* Legend */}
-      <div className="mt-3 flex items-center justify-between text-[9px] font-bold text-gray-300 dark:text-zinc-600">
-        <span>Low</span>
-        <div className="flex gap-0.5">
-          {['bg-red-300', 'bg-orange-200', 'bg-yellow-200', 'bg-green-300', 'bg-emerald-400'].map(c => (
-            <div key={c} className={cn('h-2.5 w-4 rounded-sm', c)} />
+      {/* Grid constrained to a sensible max-width so cells stay compact */}
+      <div className="max-w-[320px]">
+        {/* Day-of-week labels */}
+        <div className="grid grid-cols-7 mb-1 gap-1">
+          {['M', 'T', 'W', 'T', 'F', 'S', 'S'].map((d, i) => (
+            <div key={i} className="text-center text-[9px] font-bold text-gray-300 dark:text-zinc-600">{d}</div>
           ))}
         </div>
-        <span>High</span>
+
+        {/* Heatmap grid */}
+        <div className="flex flex-col gap-1">
+          {weeks.map((week, wi) => (
+            <div key={wi} className="grid grid-cols-7 gap-1">
+              {week.map(day => {
+                const dateStr = format(day, 'yyyy-MM-dd');
+                const mood = moodByDate[dateStr] as Mood | undefined;
+                const score = mood ? MOOD_SCORE[mood] : undefined;
+                const emoji = getMoodEmoji(mood);
+                const isToday = dateStr === format(today, 'yyyy-MM-dd');
+                return (
+                  <button
+                    key={dateStr}
+                    onClick={isToday ? onOpenMood : undefined}
+                    title={mood ? `${format(day, 'MMM d')} — ${mood}` : format(day, 'MMM d')}
+                    className={cn(
+                      'aspect-square rounded-md transition-all flex items-center justify-center',
+                      scoreToColor(score),
+                      isToday && 'ring-2 ring-pink-400 ring-offset-1',
+                      isToday && !mood && 'opacity-60 cursor-pointer hover:opacity-100',
+                      !isToday && 'cursor-default'
+                    )}
+                  >
+                    {emoji && score !== undefined ? (
+                      <span className="text-[8px] leading-none">{emoji}</span>
+                    ) : null}
+                  </button>
+                );
+              })}
+            </div>
+          ))}
+        </div>
+
+        {/* Legend */}
+        <div className="mt-3 flex items-center justify-between text-[9px] font-bold text-gray-300 dark:text-zinc-600">
+          <span>Low</span>
+          <div className="flex gap-0.5">
+            {['bg-red-300', 'bg-orange-200', 'bg-yellow-200', 'bg-green-300', 'bg-emerald-400'].map(c => (
+              <div key={c} className={cn('h-2.5 w-4 rounded-sm', c)} />
+            ))}
+          </div>
+          <span>High</span>
+        </div>
       </div>
     </div>
   );

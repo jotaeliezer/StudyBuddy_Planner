@@ -127,32 +127,30 @@ export function CountdownCards() {
           <Plus className="h-4 w-4" />
         </button>
       </div>
-      <div className="flex flex-col gap-2">
+      <div className="grid grid-cols-2 gap-2">
         {upcoming.map(ev => (
           <motion.div
             key={ev.id}
             layout
-            className="group flex items-center gap-3 rounded-2xl px-3 py-3 border border-transparent"
+            className="group relative flex flex-col items-center justify-center rounded-2xl px-3 py-4 border border-transparent text-center gap-1"
             style={{ backgroundColor: `${ev.color}18`, borderColor: `${ev.color}30` }}
           >
             <span className="text-2xl">{ev.emoji}</span>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-gray-800 dark:text-gray-100 truncate">{ev.label}</p>
-              <p className="text-[10px] text-gray-500 dark:text-gray-400">
-                {format(new Date(ev.date + 'T12:00:00'), 'MMM do, yyyy')}
-              </p>
-            </div>
-            <div className="text-right shrink-0">
-              <p className="text-2xl font-black" style={{ color: ev.color }}>
-                {ev.days === 0 ? '🎉' : ev.days}
-              </p>
-              <p className="text-[10px] font-bold text-gray-400">
-                {ev.days === 0 ? 'Today!' : ev.days === 1 ? 'day left' : 'days left'}
-              </p>
-            </div>
+            <p className="text-[11px] font-bold text-gray-800 dark:text-gray-100 leading-tight line-clamp-1 w-full text-center">
+              {ev.label}
+            </p>
+            <p className="text-3xl font-black leading-none" style={{ color: ev.color }}>
+              {ev.days === 0 ? '🎉' : ev.days}
+            </p>
+            <p className="text-[9px] font-bold text-gray-400 dark:text-gray-500 uppercase tracking-wide">
+              {ev.days === 0 ? 'Today!' : ev.days === 1 ? 'day left' : 'days left'}
+            </p>
+            <p className="text-[9px] text-gray-400 dark:text-gray-500">
+              {format(new Date(ev.date + 'T12:00:00'), 'MMM d')}
+            </p>
             <button
               onClick={() => removeEvent(ev.id)}
-              className="opacity-0 group-hover:opacity-100 p-1 rounded-lg text-gray-300 hover:text-red-400 transition-all"
+              className="absolute top-1.5 right-1.5 opacity-0 group-hover:opacity-100 p-1 rounded-lg text-gray-300 hover:text-red-400 transition-all"
             >
               <X className="h-3 w-3" />
             </button>
