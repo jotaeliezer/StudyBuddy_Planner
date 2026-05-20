@@ -105,8 +105,8 @@ export function HomeView({
                 Verse of the Day
               </p>
             </div>
-            <div className="rounded-2xl border border-pink-100/70 bg-white/60 dark:border-pink-900/30 dark:bg-zinc-900/40 px-5 py-4 flex gap-4 items-start">
-              <div className="text-3xl select-none">🕊️</div>
+            <div className="rounded-2xl border border-pink-100/70 bg-white/60 dark:border-pink-900/30 dark:bg-zinc-900/40 px-5 py-4 flex gap-4 items-center">
+              <div className="text-2xl select-none shrink-0">✝️</div>
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-bold text-pink-500 dark:text-pink-300 mb-1">{verse.reference}</p>
                 <p className="text-sm leading-relaxed text-gray-700 dark:text-gray-200">{verse.text}</p>
@@ -159,7 +159,7 @@ export function HomeView({
           )}
         </div>
 
-        {/* ② Affirmation ── cols 2–3 */}
+        {/* ③ Affirmation ── cols 2–3 */}
         <div className="glass squircle border border-white/40 dark:border-white/10 p-5 shadow-sm lg:col-span-2 flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <Sparkles className="h-3.5 w-3.5 text-amber-400" />
@@ -170,10 +170,10 @@ export function HomeView({
           <p className="text-[15px] font-semibold leading-relaxed text-gray-700 dark:text-gray-200 flex-1">
             {affirmation}
           </p>
-          {/* Mood strip at bottom of affirmation card */}
-          {moodEmoji && (
+          {/* Mood strip — logged or prompt to log */}
+          {moodEmoji ? (
             <div
-              className="flex items-center gap-3 rounded-2xl px-4 py-2.5 mt-1 cursor-pointer hover:opacity-80 transition-opacity"
+              className="flex items-center gap-3 rounded-2xl px-4 py-2.5 cursor-pointer hover:opacity-80 transition-opacity"
               style={{ backgroundColor: 'rgba(236,72,153,0.06)' }}
               onClick={onOpenMood}
             >
@@ -183,11 +183,19 @@ export function HomeView({
                 <p className="text-[10px] text-gray-400 dark:text-gray-500">Feeling today · tap to update</p>
               </div>
             </div>
+          ) : (
+            <button
+              onClick={onOpenMood}
+              className="flex items-center gap-3 rounded-2xl px-4 py-2.5 bg-gray-50/80 dark:bg-zinc-800/50 border border-dashed border-gray-200 dark:border-zinc-700 hover:border-pink-300 dark:hover:border-pink-700 transition-colors text-left w-full"
+            >
+              <span className="text-xl">😊</span>
+              <p className="text-sm text-gray-400 dark:text-gray-500">How are you feeling today?</p>
+            </button>
           )}
         </div>
 
-        {/* ③ Today's Agenda ── cols 1–2 */}
-        <div className="glass squircle border border-white/40 dark:border-white/10 p-5 shadow-sm md:col-span-2 flex flex-col gap-3">
+        {/* ④ Today's Agenda ── cols 1–2 */}
+        <div className="glass squircle border border-white/40 dark:border-white/10 p-5 shadow-sm md:col-span-2 flex flex-col gap-3 min-h-[160px]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CalendarCheck className="h-3.5 w-3.5 text-pink-400" />
@@ -202,9 +210,11 @@ export function HomeView({
             )}
           </div>
           {todaysTasks.length === 0 ? (
-            <p className="text-sm text-gray-400 dark:text-gray-500 py-2">
-              Nothing scheduled yet today. Enjoy the breathing room! 🌸
-            </p>
+            <div className="flex-1 flex items-center justify-center">
+              <p className="text-sm text-gray-400 dark:text-gray-500 text-center">
+                Nothing scheduled for today. Enjoy the breathing room!
+              </p>
+            </div>
           ) : (
             <ul className="flex flex-col gap-2">
               {todaysTasks.map((task) => {
@@ -240,17 +250,17 @@ export function HomeView({
           )}
         </div>
 
-        {/* ④ Habits ── col 3 */}
+        {/* ⑤ Habits ── col 3 */}
         <div className="md:col-span-2 lg:col-span-1">
           <HabitStrip />
         </div>
 
-        {/* ⑤ Countdowns ── col 1 */}
+        {/* ⑥ Countdowns ── col 1 */}
         <div>
           <CountdownCards />
         </div>
 
-        {/* ⑥ Mood Heatmap ── cols 2–3 */}
+        {/* ⑦ Mood Heatmap ── cols 2–3 */}
         <div className="md:col-span-2 lg:col-span-2">
           <MoodHeatmap moods={moods} onOpenMood={onOpenMood} />
         </div>
