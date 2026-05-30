@@ -112,7 +112,12 @@ function loadCategories(): CategoryDef[] {
       return c;
     });
     const filtered = mapped.filter(isCategoryDef);
-    return filtered.length > 0 ? filtered : DEFAULT_CATEGORIES;
+    if (filtered.length === 0) return DEFAULT_CATEGORIES;
+    // Merge in any DEFAULT_CATEGORIES that aren't already saved
+    // (so new built-in categories like Deadline appear automatically)
+    const savedIds = new Set(filtered.map((c) => c.id));
+    const missing = DEFAULT_CATEGORIES.filter((c) => !savedIds.has(c.id));
+    return [...filtered, ...missing];
   } catch {
     return DEFAULT_CATEGORIES;
   }
