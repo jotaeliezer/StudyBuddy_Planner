@@ -80,9 +80,11 @@ const WeeklyTaskBlock = ({
   onDraggingChange?: (taskIdOrNull: string | null) => void;
 }) => {
   const course = courses.find((c: any) => c.id === task.courseId);
-  const categoryDef = categories?.find((c: any) => c.id === task.category);
+  const catId = typeof task.category === 'string' ? task.category : (task.category as { id?: string } | undefined)?.id ?? '';
+  const isDeadline = catId === 'Deadline';
+  const categoryDef = categories?.find((c: any) => c.id === catId || c.id === task.category);
   const categoryIcon = categoryDef?.icon || '📌';
-  const categoryColor = categoryDef?.color || '#cbd5e1';
+  const categoryColor = isDeadline ? '#ef4444' : (categoryDef?.color || '#cbd5e1');
 
   let displayTime = '';
   if (task.time) {
@@ -137,8 +139,10 @@ const WeeklyTaskBlock = ({
           </span>
           <span
             className={cn(
-              'mt-0.5 font-semibold leading-tight break-words text-gray-800 drop-shadow-sm print-week-task-title',
-              compact ? 'text-[12px]' : 'text-sm',
+              'mt-0.5 leading-tight break-words drop-shadow-sm print-week-task-title',
+              isDeadline
+                ? 'font-extrabold text-[14px] text-red-800 dark:text-red-200'
+                : cn('font-semibold text-gray-800', compact ? 'text-[12px]' : 'text-sm'),
               task.completed && 'line-through opacity-70'
             )}
           >
@@ -317,13 +321,6 @@ export function WeeklyView({
     return { ws, days, isCurrentWeek: offset === 0, offset };
   });
 
-  // Course rows — append "Other Tasks" bucket if needed
-  const hasOtherTasks = tasks.some((t) => !courses.find((c) => c.id === t.courseId));
-  const courseRows: Course[] = [
-    ...courses,
-    ...(hasOtherTasks ? [{ id: 'other', name: 'Other Tasks', color: '#d1d5db', icon: '📋' } as Course] : []),
-  ];
-
   const taskCellDnDKey = (day: Date, courseId: string) => `${format(day, 'yyyy-MM-dd')}__${courseId}`;
 
   const handleDraggingTaskChange = (id: string | null) => {
@@ -450,6 +447,13 @@ export function WeeklyView({
           <div className="flex items-center gap-2">
             <button
               type="button"
+              onClick={() => onAddTask(isOnCurrentWeek ? today : weekStart)}
+              className="mr-2 rounded-xl bg-violet-100 px-4 py-2 font-bold text-violet-600 transition-colors hover:bg-violet-200 dark:bg-violet-900/40 dark:text-violet-300 dark:hover:bg-violet-900/60"
+            >
+              + New Task
+            </button>
+            <button
+              type="button"
               onClick={openAddCourse}
               className="mr-2 rounded-xl bg-pink-100 px-4 py-2 font-bold text-pink-600 transition-colors hover:bg-pink-200 dark:bg-pink-900/40 dark:text-pink-300 dark:hover:bg-pink-900/60"
             >
@@ -556,6 +560,19 @@ export function WeeklyView({
                       ? displayTitleForWeek(ws, `Week of ${format(ws, 'MMM do, yyyy')}`)
                       : `Week of ${format(ws, 'MMM do, yyyy')}`;
                   const weekNum = getWeekNumber(ws);
+
+                  // "Other Tasks" row only appears in weeks that have uncategorised tasks on those days
+                  const weekHasOtherTasks = tasks.some(
+                    (t) =>
+                      !courses.find((c) => c.id === t.courseId) &&
+                      days.some((d) => t.dueDate === format(d, 'yyyy-MM-dd'))
+                  );
+                  const courseRows: Course[] = [
+                    ...courses,
+                    ...(weekHasOtherTasks
+                      ? [{ id: 'other', name: 'Other Tasks', color: '#d1d5db', icon: '📋' } as Course]
+                      : []),
+                  ];
 
                   return (
                     <motion.div
