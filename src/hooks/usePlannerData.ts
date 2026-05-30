@@ -10,6 +10,7 @@ const DEFAULT_CATEGORIES: CategoryDef[] = [
   { id: 'Project', name: 'Project', color: '#fed7aa', icon: '🚀' },
   { id: 'Reading', name: 'Reading', color: '#bbf7d0', icon: '📖' },
   { id: 'Personal', name: 'Personal', color: '#e9d5ff', icon: '🌿' },
+  { id: 'Deadline', name: 'Deadline', color: '#ef4444', icon: '🔴' },
 ];
 
 function isRecord(v: unknown): v is Record<string, unknown> {
