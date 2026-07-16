@@ -112,7 +112,7 @@ export function CourseManager({
                       type="button"
                       onPointerDown={(e) => e.stopPropagation()}
                       onClick={() => openEditCourse(course)}
-                      className="p-2 rounded-xl bg-white/80 hover:bg-white dark:bg-zinc-800/80 dark:hover:bg-zinc-700 text-gray-600 shadow-sm"
+                      className="p-2 rounded-xl bg-white/80 hover:bg-white dark:bg-zinc-800/80 dark:hover:bg-zinc-700 text-gray-600 dark:text-gray-300 shadow-sm"
                       title="Edit course"
                     >
                       <Edit2 className="w-4 h-4" />
@@ -131,7 +131,7 @@ export function CourseManager({
                         });
                         if (ok) onDeleteCourse(course.id);
                       }}
-                      className="p-2 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-900/20 text-red-500 shadow-sm"
+                      className="p-2 rounded-xl bg-red-50 hover:bg-red-100 dark:bg-red-900/20 dark:hover:bg-red-900/40 text-red-500 shadow-sm"
                       title="Delete course"
                     >
                       <Trash2 className="w-4 h-4" />

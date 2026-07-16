@@ -150,7 +150,7 @@ export function MonthlyView({ tasks, courses, categories, onAddTask, onTaskClick
               ))}
             </div>
 
-            <div className="flex-grow relative bg-[#FFF9FB]/50 dark:bg-zinc-900/50 overflow-hidden">
+            <div className="flex-grow relative bg-[var(--theme-bg)]/50 overflow-hidden">
               <AnimatePresence initial={false} custom={direction} mode="popLayout">
                 <motion.div
                   key={monthStart.toISOString()}
@@ -171,7 +171,7 @@ export function MonthlyView({ tasks, courses, categories, onAddTask, onTaskClick
                       <div
                         key={day.toISOString()}
                         className={cn(
-                          'month-day-cell border-b border-r border-pink-100/50 dark:border-zinc-800/50 p-2 relative group flex flex-col gap-1 transition-colors hover:bg-white/40 dark:hover:bg-zinc-800/40',
+                          'month-day-cell border-b border-r border-pink-100/50 dark:border-zinc-700/50 p-2 relative group flex flex-col gap-1 transition-colors hover:bg-white/40 dark:hover:bg-zinc-800/40',
                           !isCurrentMonth && 'opacity-40',
                           idx % 7 === 6 && 'border-r-0'
                         )}
@@ -179,7 +179,7 @@ export function MonthlyView({ tasks, courses, categories, onAddTask, onTaskClick
                         <div className="flex justify-between items-start">
                           <span className={cn(
                             'w-7 h-7 flex items-center justify-center rounded-full text-sm font-bold month-day-num',
-                            isToday ? 'bg-pink-400 text-white shadow-md' : 'text-gray-600 dark:text-gray-400'
+                            isToday ? 'bg-pink-400 text-white shadow-md' : 'text-gray-600 dark:text-gray-300'
                           )}>
                             {format(day, 'd')}
                           </span>

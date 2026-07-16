@@ -27,7 +27,7 @@ export function ConfirmDialog({
     <AnimatePresence>
       {open && (
         <div
-          className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-[#FFF9FB]/80 dark:bg-[#18181b]/80 backdrop-blur-sm no-print"
+          className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/20 dark:bg-black/50 backdrop-blur-sm no-print"
           role="presentation"
           onClick={(e) => {
             if (e.target === e.currentTarget) onCancel();
@@ -42,10 +42,10 @@ export function ConfirmDialog({
             animate={{ scale: 1, opacity: 1, y: 0 }}
             exit={{ scale: 0.95, opacity: 0, y: 10 }}
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-            className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-[32px] shadow-2xl overflow-hidden border border-pink-100 dark:border-zinc-800 flex flex-col"
+            className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-[32px] shadow-2xl overflow-hidden border border-pink-100 dark:border-zinc-700 flex flex-col"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="flex justify-between items-center p-6 border-b border-pink-50 dark:border-white/5 bg-[#FFF9FB] dark:bg-zinc-800/50 shrink-0">
+            <div className="flex justify-between items-center p-6 border-b border-pink-50 dark:border-zinc-700/80 bg-[#FFF9FB] dark:bg-zinc-800 shrink-0">
               <h3
                 id="confirm-dialog-title"
                 className="text-xl font-bold text-gray-800 dark:text-gray-100 pr-4"
@@ -55,7 +55,7 @@ export function ConfirmDialog({
               <button
                 type="button"
                 onClick={onCancel}
-                className="p-2 rounded-full hover:bg-white dark:hover:bg-zinc-700 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors shadow-sm bg-white/50 dark:bg-zinc-800/50 flex-shrink-0"
+                className="p-2 rounded-full hover:bg-white dark:hover:bg-zinc-700 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors shadow-sm bg-white/50 dark:bg-zinc-700/60 flex-shrink-0"
                 aria-label={cancelLabel}
               >
                 <X className="w-5 h-5" />

@@ -100,7 +100,7 @@ export function HabitStrip() {
               </div>
               <button
                 onClick={e => { e.stopPropagation(); removeHabit(habit.id); }}
-                className="opacity-0 group-hover:opacity-100 p-1 rounded-lg text-gray-300 hover:text-red-400 transition-all"
+                className="opacity-0 group-hover:opacity-100 p-1 rounded-lg text-gray-300 dark:text-zinc-500 hover:text-red-400 transition-all"
               >
                 <X className="h-3 w-3" />
               </button>
@@ -143,7 +143,7 @@ export function HabitStrip() {
               <button
                 key={c}
                 onClick={() => setNewColor(c)}
-                className={cn('h-6 w-6 rounded-full transition-transform', newColor === c ? 'scale-125 ring-2 ring-offset-1 ring-gray-400' : '')}
+                className={cn('h-6 w-6 rounded-full transition-transform', newColor === c ? 'scale-125 ring-2 ring-offset-1 ring-offset-[var(--theme-bg)] ring-gray-400 dark:ring-zinc-500' : '')}
                 style={{ backgroundColor: c }}
               />
             ))}

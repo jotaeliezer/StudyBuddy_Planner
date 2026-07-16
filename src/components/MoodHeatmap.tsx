@@ -91,7 +91,7 @@ export function MoodHeatmap({ moods, onOpenMood }: MoodHeatmapProps) {
                     className={cn(
                       'aspect-square rounded-md transition-all flex items-center justify-center',
                       scoreToColor(score),
-                      isToday && 'ring-2 ring-pink-400 ring-offset-1',
+                      isToday && 'ring-2 ring-pink-400 ring-offset-1 ring-offset-[var(--theme-bg)]',
                       isToday && !mood && 'opacity-60 cursor-pointer hover:opacity-100',
                       !isToday && 'cursor-default'
                     )}
@@ -110,7 +110,13 @@ export function MoodHeatmap({ moods, onOpenMood }: MoodHeatmapProps) {
         <div className="mt-3 flex items-center justify-between text-[9px] font-bold text-gray-300 dark:text-zinc-600">
           <span>Low</span>
           <div className="flex gap-0.5">
-            {['bg-red-300', 'bg-orange-200', 'bg-yellow-200', 'bg-green-300', 'bg-emerald-400'].map(c => (
+            {[
+              'bg-red-300 dark:bg-red-400',
+              'bg-orange-200 dark:bg-orange-400',
+              'bg-yellow-200 dark:bg-yellow-500',
+              'bg-green-300 dark:bg-green-500',
+              'bg-emerald-400 dark:bg-emerald-500',
+            ].map(c => (
               <div key={c} className={cn('h-2.5 w-4 rounded-sm', c)} />
             ))}
           </div>

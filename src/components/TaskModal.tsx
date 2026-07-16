@@ -322,18 +322,18 @@ export function TaskModal({ isOpen, onClose, onSave, onDelete, courses, categori
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-[#FFF9FB]/80 dark:bg-[#18181b]/80 backdrop-blur-sm no-print">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 dark:bg-black/50 backdrop-blur-sm no-print">
       <motion.div 
         initial={{ scale: 0.95, opacity: 0, y: 10 }}
         animate={{ scale: 1, opacity: 1, y: 0 }}
         exit={{ scale: 0.95, opacity: 0, y: 10 }}
-        className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-[32px] shadow-2xl overflow-hidden border border-pink-100 dark:border-zinc-800"
+        className="w-full max-w-md bg-white dark:bg-zinc-900 rounded-[32px] shadow-2xl overflow-hidden border border-pink-100 dark:border-zinc-700"
       >
-        <div className="flex justify-between items-center p-6 border-b border-pink-50 dark:border-white/5 bg-[#FFF9FB] dark:bg-zinc-800/50">
+        <div className="flex justify-between items-center p-6 border-b border-pink-50 dark:border-zinc-700/80 bg-[#FFF9FB] dark:bg-zinc-800">
           <h3 className="text-2xl font-bold text-gray-800 dark:text-gray-100">
             {existingTask ? 'Edit Task ✍️' : 'New Task ✨'}
           </h3>
-          <button onClick={onClose} type="button" className="p-2 rounded-full hover:bg-white dark:hover:bg-zinc-700 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors shadow-sm bg-white/50 dark:bg-zinc-800/50">
+          <button onClick={onClose} type="button" className="p-2 rounded-full hover:bg-white dark:hover:bg-zinc-700 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-colors shadow-sm bg-white/50 dark:bg-zinc-700/60">
             <X className="w-5 h-5" />
           </button>
         </div>
@@ -389,7 +389,7 @@ export function TaskModal({ isOpen, onClose, onSave, onDelete, courses, categori
             </div>
           </div>
 
-          <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-50 dark:border-white/5">
+          <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-50 dark:border-zinc-700/80">
             {existingTask && onDelete ? (
               <button 
                 type="button"

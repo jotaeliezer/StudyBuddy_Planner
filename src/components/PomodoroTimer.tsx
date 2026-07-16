@@ -153,7 +153,7 @@ export function PomodoroTimer({ onClose }: PomodoroTimerProps) {
       <div className="flex flex-col items-center px-4 pb-2">
         <div className="relative flex items-center justify-center">
           <svg width="140" height="140" className="-rotate-90">
-            <circle cx="70" cy="70" r="54" stroke="#f3f4f6" strokeWidth="8" fill="none" className="dark:stroke-zinc-700" />
+            <circle cx="70" cy="70" r="54" stroke="currentColor" strokeWidth="8" fill="none" className="text-gray-100 dark:text-zinc-700" />
             <circle
               cx="70" cy="70" r="54"
               stroke={color}

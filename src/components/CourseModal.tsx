@@ -72,14 +72,14 @@ export function CourseModal({ isOpen, onClose, onSave, existingCourse }: CourseM
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 dark:bg-black/40 backdrop-blur-sm">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/20 dark:bg-black/50 backdrop-blur-sm">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-white dark:bg-zinc-900 rounded-3xl shadow-xl w-full max-w-sm overflow-hidden"
+        className="bg-white dark:bg-zinc-900 rounded-3xl shadow-xl w-full max-w-sm overflow-hidden border border-gray-100 dark:border-zinc-700"
       >
-        <div className="p-6 border-b border-gray-100 dark:border-zinc-800 flex justify-between items-center">
+        <div className="p-6 border-b border-gray-100 dark:border-zinc-700/80 bg-[#FFF9FB] dark:bg-zinc-800 flex justify-between items-center">
           <h2 className="text-xl font-bold text-gray-800 dark:text-gray-100">
             {existingCourse ? 'Edit Course' : 'Add Course'}
           </h2>
@@ -89,17 +89,17 @@ export function CourseModal({ isOpen, onClose, onSave, existingCourse }: CourseM
         </div>
         <div className="p-6 space-y-6">
           <div className="space-y-2">
-            <label className="text-sm font-bold text-gray-500 uppercase tracking-wider">Course Name</label>
+            <label className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Course Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="e.g. Biology"
-              className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 focus:bg-white dark:focus:bg-zinc-700 border-2 border-transparent focus:border-pink-300 dark:focus:border-pink-500 outline-none font-medium transition-all"
+              className="w-full px-4 py-3 rounded-xl bg-gray-50 dark:bg-zinc-800 focus:bg-white dark:focus:bg-zinc-700 border-2 border-transparent focus:border-pink-300 dark:focus:border-pink-500 outline-none font-medium text-gray-800 dark:text-gray-200 transition-all"
             />
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-bold text-gray-500 uppercase tracking-wider">Color</label>
+            <label className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Color</label>
             <div className="flex flex-wrap gap-2">
               {COLORS.map((c) => (
                 <button
@@ -116,7 +116,7 @@ export function CourseModal({ isOpen, onClose, onSave, existingCourse }: CourseM
             </div>
           </div>
           <div className="space-y-2">
-            <label className="text-sm font-bold text-gray-500 uppercase tracking-wider">Icon</label>
+            <label className="text-sm font-bold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Icon</label>
             <div className="max-h-48 overflow-y-auto rounded-xl border border-gray-100 dark:border-zinc-700 p-1 scrollbar-thin">
               <div className="flex flex-wrap gap-1.5">
                 {EMOJIS.map((e) => (

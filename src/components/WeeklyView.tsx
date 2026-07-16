@@ -125,9 +125,14 @@ const WeeklyTaskBlock = ({
           e.stopPropagation();
           onToggle(task.id);
         }}
-        className="no-print mt-[2px] shrink-0 text-gray-700/80 transition-colors hover:text-black z-10"
+        className={cn(
+          'no-print mt-[2px] shrink-0 transition-colors z-10',
+          task.completed
+            ? 'text-gray-700/80 hover:text-black dark:text-gray-300 dark:hover:text-gray-100'
+            : 'text-gray-700/80 hover:text-black'
+        )}
       >
-        {task.completed ? <CheckCircle2 className="h-4 w-4 text-green-700" /> : <Circle className="h-4 w-4 opacity-60" />}
+        {task.completed ? <CheckCircle2 className="h-4 w-4 text-green-700 dark:text-green-400" /> : <Circle className="h-4 w-4 opacity-60" />}
       </button>
       <div className="relative min-w-0 flex-grow pt-[1px]">
         <div className="flex items-start gap-1 pr-5">
@@ -142,7 +147,11 @@ const WeeklyTaskBlock = ({
               'mt-0.5 leading-tight break-words drop-shadow-sm print-week-task-title',
               isDeadline
                 ? 'font-extrabold text-[14px] text-red-800 dark:text-red-200'
-                : cn('font-semibold text-gray-800', compact ? 'text-[12px]' : 'text-sm'),
+                : cn(
+                    'font-semibold',
+                    compact ? 'text-[12px]' : 'text-sm',
+                    task.completed ? 'text-gray-800 dark:text-gray-300' : 'text-gray-800'
+                  ),
               task.completed && 'line-through opacity-70'
             )}
           >
@@ -150,7 +159,14 @@ const WeeklyTaskBlock = ({
           </span>
         </div>
         {displayTime && (
-          <span className="mt-0.5 whitespace-nowrap text-[10px] font-bold text-gray-700/90 print-week-task-time">{displayTime}</span>
+          <span
+            className={cn(
+              'mt-0.5 whitespace-nowrap text-[10px] font-bold print-week-task-time',
+              task.completed ? 'text-gray-700/90 dark:text-gray-400' : 'text-gray-700/90'
+            )}
+          >
+            {displayTime}
+          </span>
         )}
       </div>
 
@@ -676,11 +692,11 @@ export function WeeklyView({
                           /* Course label cell */
                           <div
                             key={`${weekKey}-${course.id}-label`}
-                            className="group relative flex h-36 flex-col items-center justify-center border-b border-r border-white/30 px-2 py-3 dark:border-zinc-900/30"
+                            className="group relative flex h-36 flex-col items-center justify-center border-b border-r border-white/30 px-2 py-3 dark:border-zinc-700/50"
                             style={{ backgroundColor: course.color || '#e2e8f0' }}
                           >
                             {course.icon && (
-                              <div className="relative z-10 mb-1.5 flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-xl shadow-sm backdrop-blur-sm">
+                              <div className="relative z-10 mb-1.5 flex h-9 w-9 items-center justify-center rounded-xl bg-white/70 text-xl shadow-sm backdrop-blur-sm dark:bg-black/25">
                                 {course.icon}
                               </div>
                             )}
@@ -714,7 +730,7 @@ export function WeeklyView({
                                     });
                                     if (ok) onDeleteCourse?.(course.id);
                                   }}
-                                  className="rounded bg-red-50 p-1 text-red-500 shadow-sm hover:bg-red-100"
+                                  className="rounded bg-red-50 p-1 text-red-500 shadow-sm hover:bg-red-100 dark:bg-red-950/50 dark:text-red-400 dark:hover:bg-red-900/40"
                                   title="Delete course"
                                 >
                                   <Trash2 className="h-3 w-3" />

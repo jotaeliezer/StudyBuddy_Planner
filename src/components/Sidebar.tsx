@@ -25,7 +25,7 @@ export function Sidebar({ currentView, onViewChange, isDarkMode, toggleDarkMode,
           onClick={() => onViewChange('home')}
           className={cn(
             'relative group cursor-pointer w-12 h-12 rounded-2xl bg-gradient-to-br from-pink-200 to-purple-200 shadow-inner flex items-center justify-center text-2xl font-bold text-white shrink-0 transition-all duration-300',
-            currentView === 'home' && 'ring-2 ring-pink-400 ring-offset-2 ring-offset-[#FFF9FB] dark:ring-offset-[#18181b] scale-110'
+            currentView === 'home' && 'ring-2 ring-pink-400 ring-offset-2 ring-offset-[var(--theme-bg)] scale-110'
           )}
         >
           ✨

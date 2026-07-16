@@ -75,7 +75,7 @@ export function CountdownCards() {
             <button
               key={c}
               onClick={() => setColor(c)}
-              className={cn('h-6 w-6 rounded-full transition-transform', color === c ? 'scale-125 ring-2 ring-offset-1 ring-gray-400' : '')}
+              className={cn('h-6 w-6 rounded-full transition-transform', color === c ? 'scale-125 ring-2 ring-offset-1 ring-offset-white dark:ring-offset-zinc-900 ring-gray-400' : '')}
               style={{ backgroundColor: c }}
             />
           ))}
@@ -83,7 +83,7 @@ export function CountdownCards() {
         <div className="flex gap-2">
           <button
             onClick={() => setAdding(false)}
-            className="flex-1 py-2 rounded-xl bg-gray-100 dark:bg-zinc-800 text-sm font-bold text-gray-500"
+            className="flex-1 py-2 rounded-xl bg-gray-100 dark:bg-zinc-800 text-sm font-bold text-gray-500 dark:text-gray-400"
           >
             Cancel
           </button>

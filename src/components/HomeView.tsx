@@ -86,7 +86,7 @@ export function HomeView({
             'flex h-12 w-12 shrink-0 items-center justify-center rounded-2xl transition-all',
             todaysMoodEmoji
               ? 'text-3xl bg-white/60 dark:bg-zinc-800/60 shadow-sm hover:bg-white dark:hover:bg-zinc-800'
-              : 'text-gray-400 hover:bg-white/60 hover:text-pink-400 dark:hover:bg-zinc-800/60'
+              : 'text-gray-400 hover:bg-white/60 hover:text-pink-400 dark:text-gray-500 dark:hover:bg-zinc-800/60'
           )}
         >
           {todaysMoodEmoji ? todaysMoodEmoji : <Smile className="h-6 w-6" />}
@@ -173,8 +173,7 @@ export function HomeView({
           {/* Mood strip — logged or prompt to log */}
           {moodEmoji ? (
             <div
-              className="flex items-center gap-3 rounded-2xl px-4 py-2.5 cursor-pointer hover:opacity-80 transition-opacity"
-              style={{ backgroundColor: 'rgba(236,72,153,0.06)' }}
+              className="flex items-center gap-3 rounded-2xl px-4 py-2.5 cursor-pointer hover:opacity-80 transition-opacity bg-pink-500/[0.06] dark:bg-pink-400/10"
               onClick={onOpenMood}
             >
               <span className="text-2xl">{moodEmoji}</span>
@@ -224,9 +223,10 @@ export function HomeView({
                     key={task.id}
                     className={cn(
                       'flex items-center gap-3 rounded-2xl border border-white/50 px-4 py-3 dark:border-white/10',
-                      task.completed && 'opacity-55'
+                      task.completed && 'opacity-55',
+                      !course?.color && 'bg-gray-50/60 dark:bg-zinc-800/60'
                     )}
-                    style={{ backgroundColor: course?.color ? `${course.color}35` : 'rgba(249,250,251,0.6)' }}
+                    style={course?.color ? { backgroundColor: `${course.color}35` } : undefined}
                   >
                     <div
                       className="w-2 h-2 rounded-full shrink-0"
