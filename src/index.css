@@ -151,6 +151,83 @@ html.theme-ember {
   --theme-card-border: rgba(255, 255, 255, 0.9);
 }
 
+/* Light-mode contrast for dark-leaning themes (noir / carbon) */
+html.theme-noir:not(.dark) {
+  --color-text-main: #e9d5ff;
+  --color-text-muted: #d8b4fe;
+  --color-gray-900: #f3e8ff;
+  --color-gray-800: #f3e8ff;
+  --color-gray-700: #e9d5ff;
+  --color-gray-600: #e9d5ff;
+  --color-gray-500: #d8b4fe;
+  --color-gray-400: #d8b4fe;
+  --color-gray-300: #c4b5fd;
+}
+
+html.theme-noir:not(.dark) .text-gray-900,
+html.theme-noir:not(.dark) .text-gray-800 { color: #f3e8ff !important; }
+html.theme-noir:not(.dark) .text-gray-700,
+html.theme-noir:not(.dark) .text-gray-600 { color: #e9d5ff !important; }
+html.theme-noir:not(.dark) .text-gray-500,
+html.theme-noir:not(.dark) .text-gray-400 { color: #d8b4fe !important; }
+html.theme-noir:not(.dark) .text-gray-300 { color: #c4b5fd !important; }
+
+html.theme-noir:not(.dark) .text-gray-900\/90,
+html.theme-noir:not(.dark) .text-gray-800\/90,
+html.theme-noir:not(.dark) .text-gray-700\/90 { color: rgb(243 232 255 / 0.9) !important; }
+html.theme-noir:not(.dark) .text-gray-700\/80,
+html.theme-noir:not(.dark) .text-gray-600\/80 { color: rgb(233 213 255 / 0.8) !important; }
+html.theme-noir:not(.dark) .text-gray-500\/80,
+html.theme-noir:not(.dark) .text-gray-400\/80 { color: rgb(216 180 254 / 0.8) !important; }
+
+html.theme-noir:not(.dark) .bg-white\/80 { background-color: rgba(60, 30, 90, 0.75) !important; }
+html.theme-noir:not(.dark) .bg-white\/70 { background-color: rgba(60, 30, 90, 0.7) !important; }
+html.theme-noir:not(.dark) .bg-white\/60 { background-color: rgba(255, 255, 255, 0.12) !important; }
+html.theme-noir:not(.dark) .bg-white\/50 { background-color: rgba(255, 255, 255, 0.1) !important; }
+html.theme-noir:not(.dark) .bg-white\/40 { background-color: rgba(255, 255, 255, 0.08) !important; }
+html.theme-noir:not(.dark) .bg-white\/30 { background-color: rgba(255, 255, 255, 0.06) !important; }
+html.theme-noir:not(.dark) .hover\:bg-white:hover { background-color: rgba(60, 30, 90, 0.85) !important; }
+html.theme-noir:not(.dark) .hover\:bg-white\/70:hover { background-color: rgba(60, 30, 90, 0.75) !important; }
+html.theme-noir:not(.dark) .hover\:bg-white\/50:hover { background-color: rgba(255, 255, 255, 0.14) !important; }
+
+html.theme-carbon:not(.dark) {
+  --color-text-main: #e2e8f0;
+  --color-text-muted: #cbd5e1;
+  --color-gray-900: #f1f5f9;
+  --color-gray-800: #f1f5f9;
+  --color-gray-700: #e2e8f0;
+  --color-gray-600: #e2e8f0;
+  --color-gray-500: #cbd5e1;
+  --color-gray-400: #cbd5e1;
+  --color-gray-300: #94a3b8;
+}
+
+html.theme-carbon:not(.dark) .text-gray-900,
+html.theme-carbon:not(.dark) .text-gray-800 { color: #f1f5f9 !important; }
+html.theme-carbon:not(.dark) .text-gray-700,
+html.theme-carbon:not(.dark) .text-gray-600 { color: #e2e8f0 !important; }
+html.theme-carbon:not(.dark) .text-gray-500,
+html.theme-carbon:not(.dark) .text-gray-400 { color: #cbd5e1 !important; }
+html.theme-carbon:not(.dark) .text-gray-300 { color: #94a3b8 !important; }
+
+html.theme-carbon:not(.dark) .text-gray-900\/90,
+html.theme-carbon:not(.dark) .text-gray-800\/90,
+html.theme-carbon:not(.dark) .text-gray-700\/90 { color: rgb(241 245 249 / 0.9) !important; }
+html.theme-carbon:not(.dark) .text-gray-700\/80,
+html.theme-carbon:not(.dark) .text-gray-600\/80 { color: rgb(226 232 240 / 0.8) !important; }
+html.theme-carbon:not(.dark) .text-gray-500\/80,
+html.theme-carbon:not(.dark) .text-gray-400\/80 { color: rgb(203 213 225 / 0.8) !important; }
+
+html.theme-carbon:not(.dark) .bg-white\/80 { background-color: rgba(30, 41, 59, 0.8) !important; }
+html.theme-carbon:not(.dark) .bg-white\/70 { background-color: rgba(30, 41, 59, 0.75) !important; }
+html.theme-carbon:not(.dark) .bg-white\/60 { background-color: rgba(255, 255, 255, 0.1) !important; }
+html.theme-carbon:not(.dark) .bg-white\/50 { background-color: rgba(255, 255, 255, 0.08) !important; }
+html.theme-carbon:not(.dark) .bg-white\/40 { background-color: rgba(255, 255, 255, 0.07) !important; }
+html.theme-carbon:not(.dark) .bg-white\/30 { background-color: rgba(255, 255, 255, 0.05) !important; }
+html.theme-carbon:not(.dark) .hover\:bg-white:hover { background-color: rgba(51, 65, 85, 0.9) !important; }
+html.theme-carbon:not(.dark) .hover\:bg-white\/70:hover { background-color: rgba(30, 41, 59, 0.8) !important; }
+html.theme-carbon:not(.dark) .hover\:bg-white\/50:hover { background-color: rgba(255, 255, 255, 0.12) !important; }
+
 /* ── Dark mode theme palettes (html.dark + theme-*) ───────────────────── */
 
 html.dark {
