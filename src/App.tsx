@@ -11,6 +11,7 @@ import { PomodoroTimer } from './components/PomodoroTimer';
 import { usePlannerData } from './hooks/usePlannerData';
 import { useConfirm } from './context/ConfirmContext';
 import { ThemeProvider, useTheme, THEMES, FONTS } from './context/ThemeContext';
+import { LandingPage } from './components/LandingPage';
 import { Task } from './types';
 import { format } from 'date-fns';
 import type { AppView } from './types/view';
@@ -505,9 +506,15 @@ function AppInner() {
 }
 
 export default function App() {
+  const [showLanding, setShowLanding] = useState(true);
+
   return (
     <ThemeProvider>
-      <AppInner />
+      {showLanding ? (
+        <LandingPage onEnter={() => setShowLanding(false)} />
+      ) : (
+        <AppInner />
+      )}
     </ThemeProvider>
   );
 }

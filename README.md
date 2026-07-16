@@ -109,6 +109,8 @@ The app deploys automatically to GitHub Pages on every push to `main` via `.gith
 
 For any other static host, just serve the `dist/` folder.
 
+AdSense (ads monetization, not payments): see [ADSENSE_SETUP.md](ADSENSE_SETUP.md).
+
 ## Printing
 
 Open any view and use your browser's print dialog (`Ctrl+P` / `Cmd+P`). The app auto-scales the sheet to fit on one page and hides all navigation and UI controls.

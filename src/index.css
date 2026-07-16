@@ -164,6 +164,83 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 32px;
 }
 
+/* Landing page — soft study atmosphere (UI shell only) */
+.landing-page {
+  background:
+    radial-gradient(ellipse 80% 60% at 20% 15%, rgba(255, 209, 220, 0.55) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 50% at 85% 75%, rgba(193, 225, 193, 0.45) 0%, transparent 50%),
+    radial-gradient(ellipse 50% 40% at 60% 30%, rgba(174, 198, 207, 0.28) 0%, transparent 45%),
+    linear-gradient(165deg, #fff9fb 0%, #fef4f7 40%, #f5faf6 100%);
+}
+
+.landing-page__glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(48px);
+  pointer-events: none;
+  opacity: 0.55;
+  animation: landing-drift 14s ease-in-out infinite alternate;
+}
+
+.landing-page__glow--a {
+  width: min(42vw, 280px);
+  height: min(42vw, 280px);
+  top: 8%;
+  left: 6%;
+  background: rgba(255, 182, 193, 0.55);
+}
+
+.landing-page__glow--b {
+  width: min(48vw, 320px);
+  height: min(48vw, 320px);
+  bottom: 10%;
+  right: 4%;
+  background: rgba(168, 213, 186, 0.45);
+  animation-delay: -6s;
+  animation-duration: 18s;
+}
+
+.landing-page__dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.35;
+  background-image: radial-gradient(rgba(190, 24, 93, 0.12) 1px, transparent 1px);
+  background-size: 28px 28px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 45%, black 20%, transparent 75%);
+}
+
+.landing-page__content {
+  animation: landing-rise 0.7s ease-out both;
+}
+
+.landing-page__brand {
+  animation: landing-brand 0.9s ease-out both;
+}
+
+@keyframes landing-drift {
+  from { transform: translate(0, 0) scale(1); }
+  to { transform: translate(12px, -18px) scale(1.06); }
+}
+
+@keyframes landing-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes landing-brand {
+  from { opacity: 0; transform: translateY(10px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-page__glow,
+  .landing-page__content,
+  .landing-page__brand {
+    animation: none;
+  }
+}
+
 @media print {
   @page { margin: 0.5cm; size: landscape; }
   
