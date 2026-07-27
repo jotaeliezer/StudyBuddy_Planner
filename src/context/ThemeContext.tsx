@@ -81,7 +81,12 @@ export function ThemeProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     const font = FONTS.find(f => f.id === fontId);
-    if (font) document.documentElement.style.setProperty('--font-sans', font.cssValue);
+    const root = document.documentElement;
+    FONTS.forEach((f) => root.classList.remove(`font-${f.id}`));
+    if (font) {
+      root.style.setProperty('--font-sans', font.cssValue);
+      root.classList.add(`font-${font.id}`);
+    }
     try { localStorage.setItem('planner_font', fontId); } catch {}
   }, [fontId]);
 

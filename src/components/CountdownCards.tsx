@@ -100,7 +100,7 @@ export function CountdownCards() {
 
   if (upcoming.length === 0 && !adding) {
     return (
-      <div className="glass squircle rounded-3xl border border-white/40 dark:border-white/10 p-5 shadow-sm">
+      <div className="glass squircle rounded-3xl p-5 shadow-sm">
         <div className="flex items-center justify-between mb-2">
           <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Countdowns</p>
           <button
@@ -117,7 +117,7 @@ export function CountdownCards() {
   }
 
   return (
-    <div className="glass squircle rounded-3xl border border-white/40 dark:border-white/10 p-5 shadow-sm">
+    <div className="glass squircle rounded-3xl p-5 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Countdowns</p>
         <button

@@ -98,7 +98,7 @@ export function HomeView({
 
         {/* ① Verse of the day ── full width at top */}
         {verse && (
-          <div className="glass squircle border border-white/40 dark:border-white/10 p-5 shadow-sm md:col-span-2 lg:col-span-3">
+          <div className="glass squircle  p-5 shadow-sm md:col-span-2 lg:col-span-3">
             <div className="flex items-center gap-2 mb-3">
               <BookOpen className="h-3.5 w-3.5 text-pink-300" />
               <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
@@ -116,7 +116,7 @@ export function HomeView({
         )}
 
         {/* ② Intention ── col 1 */}
-        <div className="glass squircle border border-white/40 dark:border-white/10 p-5 shadow-sm flex flex-col gap-3">
+        <div className="glass squircle  p-5 shadow-sm flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <span className="text-base">🎯</span>
             <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
@@ -160,7 +160,7 @@ export function HomeView({
         </div>
 
         {/* ③ Affirmation ── cols 2–3 */}
-        <div className="glass squircle border border-white/40 dark:border-white/10 p-5 shadow-sm lg:col-span-2 flex flex-col gap-3">
+        <div className="glass squircle  p-5 shadow-sm lg:col-span-2 flex flex-col gap-3">
           <div className="flex items-center gap-2">
             <Sparkles className="h-3.5 w-3.5 text-amber-400" />
             <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">
@@ -194,7 +194,7 @@ export function HomeView({
         </div>
 
         {/* ④ Today's Agenda ── cols 1–2 */}
-        <div className="glass squircle border border-white/40 dark:border-white/10 p-5 shadow-sm md:col-span-2 flex flex-col gap-3 min-h-[160px]">
+        <div className="glass squircle  p-5 shadow-sm md:col-span-2 flex flex-col gap-3 min-h-[160px]">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <CalendarCheck className="h-3.5 w-3.5 text-pink-400" />

@@ -228,6 +228,65 @@ html.theme-carbon:not(.dark) .hover\:bg-white:hover { background-color: rgba(51,
 html.theme-carbon:not(.dark) .hover\:bg-white\/70:hover { background-color: rgba(30, 41, 59, 0.8) !important; }
 html.theme-carbon:not(.dark) .hover\:bg-white\/50:hover { background-color: rgba(255, 255, 255, 0.12) !important; }
 
+/*
+ * Light chips/surfaces still use pale gray/pastel backgrounds (day headers,
+ * New Task / Add Course / Week Labels). Restore dark text there so the global
+ * bright gray remaps above don't wash out on light fills.
+ */
+html.theme-noir:not(.dark) .bg-gray-100\/80 .text-gray-300,
+html.theme-noir:not(.dark) .bg-gray-100\/80 .text-gray-400,
+html.theme-noir:not(.dark) .bg-gray-100\/80 .text-gray-500,
+html.theme-noir:not(.dark) .bg-gray-100\/80 .text-gray-700,
+html.theme-noir:not(.dark) .bg-gray-100\/60 .text-gray-300,
+html.theme-noir:not(.dark) .bg-gray-100\/60 .text-gray-400,
+html.theme-noir:not(.dark) .bg-gray-100\/60 .text-gray-700,
+html.theme-noir:not(.dark) .bg-gray-100.text-gray-500,
+html.theme-noir:not(.dark) .bg-gray-100 .text-gray-500,
+html.theme-noir:not(.dark) .bg-gray-100 .text-gray-400,
+html.theme-noir:not(.dark) .bg-gray-100 .text-gray-700,
+html.theme-noir:not(.dark) .bg-gray-100.text-gray-800 {
+  color: #3b0764 !important;
+}
+html.theme-noir:not(.dark) .bg-violet-100.text-violet-600,
+html.theme-noir:not(.dark) .bg-violet-100 .text-violet-600,
+html.theme-noir:not(.dark) .bg-violet-100.text-violet-800,
+html.theme-noir:not(.dark) .bg-violet-100 .text-violet-800 {
+  color: #4c1d95 !important;
+}
+html.theme-noir:not(.dark) .bg-pink-100.text-pink-600,
+html.theme-noir:not(.dark) .bg-pink-100 .text-pink-600,
+html.theme-noir:not(.dark) .bg-pink-100.text-pink-800,
+html.theme-noir:not(.dark) .bg-pink-100 .text-pink-800 {
+  color: #9f1239 !important;
+}
+
+html.theme-carbon:not(.dark) .bg-gray-100\/80 .text-gray-300,
+html.theme-carbon:not(.dark) .bg-gray-100\/80 .text-gray-400,
+html.theme-carbon:not(.dark) .bg-gray-100\/80 .text-gray-500,
+html.theme-carbon:not(.dark) .bg-gray-100\/80 .text-gray-700,
+html.theme-carbon:not(.dark) .bg-gray-100\/60 .text-gray-300,
+html.theme-carbon:not(.dark) .bg-gray-100\/60 .text-gray-400,
+html.theme-carbon:not(.dark) .bg-gray-100\/60 .text-gray-700,
+html.theme-carbon:not(.dark) .bg-gray-100.text-gray-500,
+html.theme-carbon:not(.dark) .bg-gray-100 .text-gray-500,
+html.theme-carbon:not(.dark) .bg-gray-100 .text-gray-400,
+html.theme-carbon:not(.dark) .bg-gray-100 .text-gray-700,
+html.theme-carbon:not(.dark) .bg-gray-100.text-gray-800 {
+  color: #0f172a !important;
+}
+html.theme-carbon:not(.dark) .bg-violet-100.text-violet-600,
+html.theme-carbon:not(.dark) .bg-violet-100 .text-violet-600,
+html.theme-carbon:not(.dark) .bg-violet-100.text-violet-800,
+html.theme-carbon:not(.dark) .bg-violet-100 .text-violet-800 {
+  color: #4c1d95 !important;
+}
+html.theme-carbon:not(.dark) .bg-pink-100.text-pink-600,
+html.theme-carbon:not(.dark) .bg-pink-100 .text-pink-600,
+html.theme-carbon:not(.dark) .bg-pink-100.text-pink-800,
+html.theme-carbon:not(.dark) .bg-pink-100 .text-pink-800 {
+  color: #9f1239 !important;
+}
+
 /* ── Dark mode theme palettes (html.dark + theme-*) ───────────────────── */
 
 html.dark {
@@ -393,13 +452,40 @@ h1, h2, h3, h4, h5, h6 {
   background: var(--theme-glass);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
-  border: 1px solid var(--theme-card-border);
+  border: none;
 }
 
 html.dark .glass {
   background: var(--theme-glass);
-  border: 1px solid var(--theme-card-border);
+  border: none;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
+}
+
+/* Soft serif/round fonts read small at the same px — bump base size */
+html.font-nunito,
+html.font-playfair,
+html.font-cormorant {
+  font-size: 112.5%; /* 18px if browser default is 16px */
+}
+
+/* Toolbar chips: darker labels on pastel buttons (all light themes) */
+html:not(.dark) .bg-violet-100.text-violet-600,
+html:not(.dark) .bg-violet-100 .text-violet-600,
+html:not(.dark) .bg-violet-100.text-violet-800,
+html:not(.dark) .bg-violet-100 .text-violet-800 {
+  color: #4c1d95 !important;
+}
+html:not(.dark) .bg-pink-100.text-pink-600,
+html:not(.dark) .bg-pink-100 .text-pink-600,
+html:not(.dark) .bg-pink-100.text-pink-800,
+html:not(.dark) .bg-pink-100 .text-pink-800 {
+  color: #9f1239 !important;
+}
+html:not(.dark) .bg-gray-100.text-gray-500,
+html:not(.dark) .bg-gray-100 .text-gray-500,
+html:not(.dark) .bg-gray-100.text-gray-800,
+html:not(.dark) .bg-gray-100 .text-gray-800 {
+  color: #1f2937 !important;
 }
 
 .squircle {

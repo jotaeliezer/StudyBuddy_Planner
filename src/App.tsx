@@ -155,7 +155,7 @@ function AppInner() {
         onOpenPomodoro={() => setIsPomodoroOpen(true)}
       />
 
-      <main className="planner-main flex-1 overflow-y-auto no-scrollbar glass squircle p-6 shadow-sm border border-white/40 dark:border-white/10 relative z-10 w-full">
+      <main className="planner-main flex-1 overflow-y-auto no-scrollbar glass squircle p-6 shadow-sm  relative z-10 w-full">
         {currentView === 'home' && (
           <HomeView
             tasks={tasks}
@@ -219,7 +219,7 @@ function AppInner() {
             </div>
 
             {/* Theme Panel */}
-            <div className="glass squircle p-6 mb-8 border border-white/40 dark:border-white/10 shadow-sm">
+            <div className="glass squircle p-6 mb-8  shadow-sm">
               <h3 className="font-bold text-lg text-gray-700 dark:text-gray-200 mb-5">🎨 Theme</h3>
 
               {/* Expressive group */}
@@ -286,7 +286,7 @@ function AppInner() {
             </div>
 
             {/* Font Panel */}
-            <div className="glass squircle p-6 mb-8 border border-white/40 dark:border-white/10 shadow-sm">
+            <div className="glass squircle p-6 mb-8  shadow-sm">
               <h3 className="font-bold text-lg text-gray-700 dark:text-gray-200 mb-5">✍️ Font Style</h3>
 
               {/* Soft group */}
@@ -352,7 +352,7 @@ function AppInner() {
               </div>
             </div>
 
-            <div className="glass squircle p-6 mb-8 border border-white/40 dark:border-white/10 shadow-sm">
+            <div className="glass squircle p-6 mb-8  shadow-sm">
               <h3 className="font-bold text-lg text-gray-700 dark:text-gray-200 mb-4">Task Categories</h3>
               <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
                 Create and manage the categories you can assign to your tasks.
@@ -413,7 +413,7 @@ function AppInner() {
               </form>
             </div>
 
-            <div className="glass squircle p-6 mb-8 shadow-sm border border-white/40 dark:border-white/10">
+            <div className="glass squircle p-6 mb-8 shadow-sm ">
               <h3 className="font-bold text-lg text-gray-700 dark:text-gray-200 mb-2">Data Management</h3>
               <p className="text-gray-500 dark:text-gray-400 text-sm mb-6">
                 Export your planner data or perform a hard reset.

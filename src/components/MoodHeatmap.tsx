@@ -50,7 +50,7 @@ export function MoodHeatmap({ moods, onOpenMood }: MoodHeatmapProps) {
   const topMood = Object.entries(moodCounts).sort((a, b) => b[1] - a[1])[0]?.[0] as Mood | undefined;
 
   return (
-    <div className="glass squircle rounded-3xl border border-white/40 dark:border-white/10 p-5 shadow-sm">
+    <div className="glass squircle rounded-3xl  p-5 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Mood History</p>

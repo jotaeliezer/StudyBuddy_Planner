@@ -60,6 +60,17 @@ function canReceiveTaskDrop(task: Task, courses: Course[], rowCourseId: string):
   return true;
 }
 
+/** True if the course has any tasks due Mon–Sun in `days` (same filter as day cellTasks). */
+function courseHasTasksInWeek(tasks: Task[], courses: Course[], courseId: string, days: Date[]): boolean {
+  const dayKeys = new Set(days.map((d) => format(d, 'yyyy-MM-dd')));
+  return tasks.some(
+    (t) =>
+      dayKeys.has(t.dueDate) &&
+      (t.courseId === courseId ||
+        (courseId === 'other' && !courses.find((c) => c.id === t.courseId)))
+  );
+}
+
 const WeeklyTaskBlock = ({
   task,
   courses,
@@ -464,14 +475,14 @@ export function WeeklyView({
             <button
               type="button"
               onClick={() => onAddTask(isOnCurrentWeek ? today : weekStart)}
-              className="mr-2 rounded-xl bg-violet-100 px-4 py-2 font-bold text-violet-600 transition-colors hover:bg-violet-200 dark:bg-violet-900/40 dark:text-violet-300 dark:hover:bg-violet-900/60"
+              className="mr-2 rounded-xl bg-violet-100 px-4 py-2 font-bold text-violet-800 transition-colors hover:bg-violet-200 dark:bg-violet-900/40 dark:text-violet-300 dark:hover:bg-violet-900/60"
             >
               + New Task
             </button>
             <button
               type="button"
               onClick={openAddCourse}
-              className="mr-2 rounded-xl bg-pink-100 px-4 py-2 font-bold text-pink-600 transition-colors hover:bg-pink-200 dark:bg-pink-900/40 dark:text-pink-300 dark:hover:bg-pink-900/60"
+              className="mr-2 rounded-xl bg-pink-100 px-4 py-2 font-bold text-pink-800 transition-colors hover:bg-pink-200 dark:bg-pink-900/40 dark:text-pink-300 dark:hover:bg-pink-900/60"
             >
               + Add Course
             </button>
@@ -488,7 +499,7 @@ export function WeeklyView({
                 }
                 setWeekLabelsOpen(true);
               }}
-              className={`mr-2 flex items-center gap-1.5 rounded-xl px-4 py-2 font-bold transition-colors ${weekLabelConfig ? 'bg-violet-100 text-violet-600 hover:bg-violet-200 dark:bg-violet-900/40 dark:text-violet-300 dark:hover:bg-violet-900/60' : 'bg-gray-100 text-gray-500 hover:bg-gray-200 dark:bg-zinc-800 dark:text-gray-400 dark:hover:bg-zinc-700'}`}
+              className={`mr-2 flex items-center gap-1.5 rounded-xl px-4 py-2 font-bold transition-colors ${weekLabelConfig ? 'bg-violet-100 text-violet-800 hover:bg-violet-200 dark:bg-violet-900/40 dark:text-violet-300 dark:hover:bg-violet-900/60' : 'bg-gray-100 text-gray-800 hover:bg-gray-200 dark:bg-zinc-800 dark:text-gray-400 dark:hover:bg-zinc-700'}`}
               title="Set Week Labels"
             >
               <BookOpen className="h-4 w-4" />
@@ -542,7 +553,7 @@ export function WeeklyView({
         {/* ── Multi-week scroll area ── */}
         <div className="print-sheet-outer flex min-h-0 flex-1 flex-col overflow-hidden">
           <div ref={printSheetRef} className="print-sheet flex min-h-0 w-full flex-1 flex-col">
-            <div className="glass squircle relative flex min-h-0 flex-1 flex-col overflow-hidden border border-white/40 shadow-sm dark:border-white/10">
+            <div className="glass squircle relative flex min-h-0 flex-1 flex-col overflow-hidden shadow-sm">
               {/* ── Empty state: no courses yet ── */}
               {courses.length === 0 && (
                 <div className="flex flex-1 flex-col items-center justify-center gap-5 p-8 text-center">
@@ -601,19 +612,17 @@ export function WeeklyView({
                       exit={(dir: number) => ({ opacity: 0, y: dir >= 0 ? -72 : 72, scale: 0.97 })}
                       transition={{ type: 'spring', stiffness: 320, damping: 32, mass: 0.9 }}
                       className={cn(
-                        'shrink-0 overflow-hidden rounded-2xl border',
-                        isCurrentWeek
-                          ? 'border-pink-300/70 shadow-md dark:border-pink-500/30'
-                          : 'border-pink-100/50 dark:border-zinc-700/50'
+                        'shrink-0 overflow-hidden rounded-2xl',
+                        isCurrentWeek ? 'shadow-md' : ''
                       )}
                     >
                       {/* Week label bar */}
                       <div
                         className={cn(
-                          'flex items-center gap-2 border-b px-4 py-2',
+                          'flex items-center gap-2 px-4 py-2',
                           isCurrentWeek
-                            ? 'border-pink-200 bg-pink-50 dark:border-pink-500/40 dark:bg-zinc-800'
-                            : 'border-pink-100/50 bg-white/80 dark:border-zinc-700 dark:bg-zinc-900/80'
+                            ? 'bg-pink-50 dark:bg-zinc-800'
+                            : 'bg-white/80 dark:bg-zinc-900/80'
                         )}
                       >
                         <span
@@ -626,7 +635,7 @@ export function WeeklyView({
                           {weekLabel}
                         </span>
                         {weekNum !== null && (
-                          <span className="ml-auto rounded-full bg-violet-100 px-2.5 py-0.5 text-xs font-bold text-violet-600 dark:bg-violet-900/50 dark:text-violet-200">
+                          <span className="ml-auto rounded-full bg-violet-100 px-2.5 py-0.5 text-xs font-bold text-violet-800 dark:bg-violet-900/50 dark:text-violet-200">
                             Week {weekNum}
                           </span>
                         )}
@@ -688,11 +697,18 @@ export function WeeklyView({
                         })}
 
                         {/* ── Course rows ── */}
-                        {courseRows.flatMap((course) => [
+                        {courseRows.flatMap((course) => {
+                          const hasTasksInWeek = courseHasTasksInWeek(tasks, courses, course.id, days);
+                          /* Empty: short fixed-ish row; non-empty: min floor, grow with content */
+                          const rowHeightClass = hasTasksInWeek ? 'min-h-20' : 'min-h-20 h-20';
+                          return [
                           /* Course label cell */
                           <div
                             key={`${weekKey}-${course.id}-label`}
-                            className="group relative flex h-36 flex-col items-center justify-center border-b border-r border-white/30 px-2 py-3 dark:border-zinc-700/50"
+                            className={cn(
+                              'group relative flex flex-col items-center justify-center border-b border-r border-white/30 px-2 py-3 dark:border-zinc-700/50',
+                              rowHeightClass
+                            )}
                             style={{ backgroundColor: course.color || '#e2e8f0' }}
                           >
                             {course.icon && (
@@ -753,7 +769,8 @@ export function WeeklyView({
                               <div
                                 key={`${weekKey}-${course.id}-${format(day, 'yyyyMMdd')}`}
                                 className={cn(
-                                  'group relative flex h-36 flex-col justify-start overflow-y-auto border-b border-r border-pink-100/50 p-1.5 last:border-r-0 no-scrollbar dark:border-zinc-700/50',
+                                  'group relative flex flex-col justify-start border-b border-r border-pink-100/50 p-1.5 last:border-r-0 dark:border-zinc-700/50',
+                                  rowHeightClass,
                                   isPast
                                     ? 'bg-gray-100/60 dark:bg-zinc-800/60'
                                     : '',
@@ -805,7 +822,8 @@ export function WeeklyView({
                               </div>
                             );
                           }),
-                        ])}
+                        ];
+                        })}
                       </div>
                     </motion.div>
                   );

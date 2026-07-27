@@ -140,7 +140,7 @@ export function MonthlyView({ tasks, courses, categories, onAddTask, onTaskClick
         <div ref={printSheetRef} className="print-sheet flex min-h-0 flex-1 flex-col w-full">
           <h2 className="print-only mb-3 text-center text-3xl font-bold text-gray-900">{titleText}</h2>
 
-          <div className="flex-grow glass squircle overflow-hidden flex flex-col shadow-sm border border-white/40 dark:border-white/10 relative min-h-0" onWheel={handleWheel}>
+          <div className="flex-grow glass squircle overflow-hidden flex flex-col shadow-sm relative min-h-0" onWheel={handleWheel}>
             <div className="monthly-day-head-row z-20 grid grid-cols-7 border-b border-pink-100/50 bg-white/40 py-3 text-center text-xs font-bold uppercase tracking-wider text-gray-500 dark:border-zinc-700 dark:bg-zinc-800/50 dark:text-gray-400">
               {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map((d) => (
                 <div key={d} className="hidden sm:block">{d}</div>

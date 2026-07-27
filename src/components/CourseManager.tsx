@@ -60,13 +60,13 @@ export function CourseManager({
           <button
             type="button"
             onClick={openAddCourse}
-            className="px-4 py-2 rounded-xl bg-pink-100 hover:bg-pink-200 dark:bg-pink-900/40 dark:hover:bg-pink-900/60 text-pink-600 dark:text-pink-300 font-bold transition-colors"
+            className="px-4 py-2 rounded-xl bg-pink-100 hover:bg-pink-200 dark:bg-pink-900/40 dark:hover:bg-pink-900/60 text-pink-800 dark:text-pink-300 font-bold transition-colors"
           >
             + Add Course
           </button>
         </div>
 
-        <div className="glass squircle p-4 sm:p-6 shadow-sm border border-white/40 dark:border-white/10 flex-1 min-h-0 flex flex-col">
+        <div className="glass squircle p-4 sm:p-6 shadow-sm flex-1 min-h-0 flex flex-col">
           {courses.length === 0 ? (
             <p className="text-gray-500 dark:text-gray-400 text-center py-12">
               No courses yet. Add a course to see it in your week view.

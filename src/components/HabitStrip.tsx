@@ -30,7 +30,7 @@ export function HabitStrip() {
   const todayDone = habits.filter(h => isChecked(h.id)).length;
 
   return (
-    <div className="glass squircle rounded-3xl border border-white/40 dark:border-white/10 p-5 shadow-sm">
+    <div className="glass squircle rounded-3xl  p-5 shadow-sm">
       <div className="flex items-center justify-between mb-4">
         <div>
           <p className="text-xs font-bold uppercase tracking-widest text-gray-400 dark:text-gray-500">Daily Habits</p>

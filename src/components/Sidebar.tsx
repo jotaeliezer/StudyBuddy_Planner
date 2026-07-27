@@ -17,7 +17,7 @@ export function Sidebar({ currentView, onViewChange, isDarkMode, toggleDarkMode,
   ];
 
   return (
-    <div className="w-[88px] glass squircle py-6 flex flex-col items-center gap-8 no-print shrink-0 shadow-sm border border-white/40 dark:border-white/10 shadow-pink-100/50 dark:shadow-none relative z-[100]">
+    <div className="w-[88px] glass squircle py-6 flex flex-col items-center gap-8 no-print shrink-0 shadow-sm shadow-pink-100/50 dark:shadow-none relative z-[100]">
       <div className="flex justify-center w-full px-2">
         <button
           type="button"
